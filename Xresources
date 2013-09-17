@@ -10,6 +10,7 @@ XTerm*metaSendsEscape: true
 XTerm*background: black
 XTerm*foreground: white
 XTerm*cursorColor: white
+XTerm*visualBell: true
 
 !
 ! rxvt-unicode
