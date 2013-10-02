@@ -1,0 +1,24 @@
+{
+	"auto_complete_commit_on_tab": true,
+	"bold_folder_labels": false,
+	"caret_style": "phase",
+	"color_scheme": "Packages/Color Scheme - Default/Dawn.tmTheme",
+	// Set to "none" to turn off drawing white space, "selection" to draw only the
+	// white space within the selection, and "all" to draw all white space
+	"draw_white_space": "all",
+	"fade_fold_buttons": true,
+	"font_size": 9,
+	"highlight_line": true,
+	"highlight_modified_tabs": false,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"line_numbers": false,
+	"rulers":
+	[
+		78, 80
+	],
+	"spell_check": false,
+	"trim_trailing_white_space_on_save": true
+}
