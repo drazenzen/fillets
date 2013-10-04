@@ -11,6 +11,9 @@ XTerm*background: black
 XTerm*foreground: white
 XTerm*cursorColor: white
 XTerm*visualBell: true
+XTerm*saveLines: 4092
+XTerm*scrollBar: false
+XTerm*scrollKey: false
 
 !
 ! rxvt-unicode
