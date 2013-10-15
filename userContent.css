@@ -12,17 +12,16 @@
 /* userContent.css example*/
 
 @-moz-document domain(domain.com) {
-    /* tag */
     body {
         font-size: 90%;
     }
-    /* id */
     #cssid {
         background-color: #FFE4B5 !important;
     }
-    /* class */
     .cssclass {
         display: hidden;
     }
 }
+
+/* Add !important to rule if your style is overriden by site default style */
 
