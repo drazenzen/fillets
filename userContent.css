@@ -1,0 +1,28 @@
+/* ------------------------------------------------------------------------ */
+/* Custom web css rules per domain in Firefox */
+/* ------------------------------------------------------------------------ */
+
+/* Ref: http://custombits.net/posts/7/custom-website-layouts-with-firefox */
+
+/* In your Firefox profile directory inside a chrome directory create: */
+/* userContent.css */
+/* If chrome dir isn't there just create it :) */
+
+
+/* userContent.css example*/
+
+@-moz-document domain(domain.com) {
+    /* tag */
+    body {
+        font-size: 90%;
+    }
+    /* id */
+    #cssid {
+        background-color: #FFE4B5 !important;
+    }
+    /* class */
+    .cssclass {
+        display: hidden;
+    }
+}
+
