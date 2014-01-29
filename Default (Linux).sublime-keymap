@@ -1,15 +1,15 @@
 [
-    { "keys": ["alt+m"], "command": "auto_complete" },
-    { "keys": ["alt+m"], "command": "replace_completion_with_auto_complete", "context":
-            [
-                    { "key": "last_command", "operator": "equal", "operand": "insert_best_completion" },
-                    { "key": "auto_complete_visible", "operator": "equal", "operand": false },
-                    { "key": "setting.tab_completion", "operator": "equal", "operand": true }
-            ]
+    { "keys": ["ctrl+enter"], "command": "auto_complete" },
+    { "keys": ["ctrl+enter"], "command": "replace_completion_with_auto_complete", "context":
+        [
+            { "key": "last_command", "operator": "equal", "operand": "insert_best_completion" },
+            { "key": "auto_complete_visible", "operator": "equal", "operand": false },
+            { "key": "setting.tab_completion", "operator": "equal", "operand": true }
+        ]
     },
     { "keys": ["ctrl+shift+c"], "command": "toggle_comment", "args": { "block": false } },
     { "keys": ["alt+x"], "command": "show_overlay", "args": {"overlay": "command_palette"} },
-    { "keys": ["alt+shift+a"], "command": "plain_tasks_archive","context": [{ "key": "selector", "operator": "equal", "operand": "text.todo" }] },
     { "keys": ["ctrl+alt+k"], "command": "run_macro_file", "args": {"file": "Packages/Default/Delete Line.sublime-macro"} },
     { "keys": ["ctrl+k", "ctrl+0"], "command": "fold_all" }
 ]
+

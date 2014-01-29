@@ -1,24 +1,22 @@
 {
-	"auto_complete_commit_on_tab": true,
-	"bold_folder_labels": false,
-	"caret_style": "phase",
-	"color_scheme": "Packages/Color Scheme - Default/Dawn.tmTheme",
-	// Set to "none" to turn off drawing white space, "selection" to draw only the
-	// white space within the selection, and "all" to draw all white space
-	"draw_white_space": "all",
-	"fade_fold_buttons": true,
+	"color_scheme": "Packages/User/Dawn (SL).tmTheme",
+	"ensure_newline_at_eof_on_save": true,
+	"fade_fold_buttons": false,
 	"font_size": 9,
-	"highlight_line": true,
-	"highlight_modified_tabs": false,
+	"gutter": true,
 	"ignored_packages":
 	[
 		"Vintage"
 	],
-	"line_numbers": false,
+	"line_numbers": true,
+	"margin": 4,
 	"rulers":
 	[
-		78, 80
+		78,
+		80,
+		120
 	],
-	"spell_check": false,
+	"tab_size": 4,
+	"translate_tabs_to_spaces": false,
 	"trim_trailing_white_space_on_save": true
 }
