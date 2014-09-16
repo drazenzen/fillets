@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2013-09-11 18:05:47 drazen>
+;; Time-stamp: <2014-09-16 16:56:43 drazen>
 ;;
 
 (defun terminal-init-screen ()
@@ -21,6 +21,14 @@
       (append (list "~/.emacs.d/lisp")
 	      load-path))
 
+;; load adwaita theme
+(load-theme 'adwaita)
+
+;; elpy if installed and if emacs >= 24
+;; link: https://github.com/jorgenschaefer/elpy
+;; (package-initialize)
+;; (elpy-enable)
+
 ;; Add time stamp when saving files
 (add-hook 'before-save-hook 'time-stamp)
 
@@ -28,13 +36,13 @@
 (blink-cursor-mode t)
 
 ;; No scrollbar
-(set-scroll-bar-mode nil)
+(set-scroll-bar-mode 'left)
 
 ;; Mouse scroll
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 
-;; No toolbar
-(tool-bar-mode 0)
+;; Toolbar
+(tool-bar-mode )
 
 ;; Set column mode
 (setq column-number-mode t)
@@ -42,17 +50,14 @@
 ;; Show matching parenthesis
 (show-paren-mode t)
 
-;; Iswitchb minor mode
-(iswitchb-mode t)
-
-;; ido mode
-;(ido-mode t)
-
-;; Icomplete minor mode
-(icomplete-mode t)
+;; Ido mode
+(ido-mode t)
 
 ;; Disable system bell
 (setq visible-bell t)
+
+;; No file dialog
+(setq use-file-dialog nil)
 
 ;; Built-in backup settings
 (setq backup-by-copying t
@@ -84,22 +89,6 @@
 ;; Enable downcase-region
 (put 'downcase-region 'disabled nil)
 
-;; shell-mode
-(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-;; Start shell when starting emacs
-;; (shell)
-
-;; php-mode
-;; (autoload 'php-mode "php-mode" "Major mode for editing PHP code." t)
-;; (add-to-list 'auto-mode-alist
-;; 	     '("\\.php[34]\\'\\|\\.php\\'\\|.phtml\\'" . php-mode))
-
-;; python-mode
-(add-hook 'python-mode-hook 'hs-minor-mode)
-;; (add-hook 'python-mode-hook 'smart-tab-mode)
-(add-hook 'python-mode-hook '(lambda () (define-key python-mode-map "\C-m" 'newline-and-indent)))
-
 ;; text-mode
 ;; (add-hook 'text-mode-hook
 ;; 	  (lambda ()
@@ -107,8 +96,8 @@
 ;; 	      (turn-on-auto-fill))))
 
 ;; javascript-mode (js2)
-(autoload 'js2-mode "js2" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+;; (autoload 'js2-mode "js2" nil t)
+;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 ;; auto-complete
 ;; (require 'auto-complete-config)
@@ -126,7 +115,7 @@
 (add-hook 'mail-mode-hook 'turn-on-auto-fill)
 
 ;; calendar localization
-;; (croatian-calendar)
+;; (croat-calendar)
 (setq calendar-week-start-day 1
       calendar-day-name-array
       ["Nedjelja" "Ponedjeljak" "Utorak"
@@ -146,19 +135,13 @@
 ;; (require 'boxquote)
 
 ;; sr-speedbar
-;; (require 'sr-speedbar)
+(require 'sr-speedbar)
 
 ;; tabbar
-; (require 'tabbar)
-
+(require 'tabbar)
 ;; w3m
-;; (require 'w3m-load)
+(require 'w3m-load)
 
-;; yasnippet
-;(add-to-list 'load-path
-;	     "~/.emacs.d/yasnippet")
-;(require 'yasnippet)
-;(yas/global-mode t)
 
 ;; E l i s p   f u n c t i o n s
 (defun insert-date-string()
@@ -167,20 +150,25 @@
   (insert (format-time-string "%Y-%m-%d")))
 
 ;; K e y s
-;; dabbrev-expand
-(global-set-key (kbd "C-b") 'hippie-expand)
+(global-set-key (kbd "C-<return>") 'hippie-expand)
 ;; save-buffer
 ;; (global-set-key (kbd "C-s") 'save-buffer)
 ;; isearch-forward
 ;; (global-set-key (kbd "<XF86Search>") 'isearch-forward)
 ;; other-window
-(global-set-key (kbd "M-<up>") 'other-window)
-(global-set-key (kbd "M-<down>") (lambda () (interactive) (other-window -1)))
+;; (global-set-key (kbd "M-<up>") 'other-window)
+;; (global-set-key (kbd "M-<down>") (lambda () (interactive) (other-window -1)))
 ;; goto-line
-(global-set-key (kbd "M-g") 'goto-line)
+;; (global-set-key (kbd "M-g") 'goto-line)
+;; hs-toggle-hiding
+;; (global-set-key (kbd "<backtab>") 'hs-toggle-hiding)
+;; server-edit
+;; (global-set-key (kbd "<f9>") 'server-edit)
+;; reply-format
+;; (global-set-key (kbd "<f7>") 'reply-format)
 
 ;; D i s p l a y
-(set-foreground-color "gray10")
+;; (set-foreground-color "gray10")
 
 ;; Dark theme
 ;; (set-foreground-color "gray90")
@@ -241,22 +229,17 @@
 ;;
 ;; What did I just do?
 ;; -------------------------------------------------------------------
+;;
 ;; M-x view-lossage
 ;;
 ;; Display character map
 ;; -------------------------------------------------------------------
+;;
 ;; M-x list-charset-chars RET unicode-bmp
 ;;
-
-(custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(blink-cursor-mode nil)
- '(column-number-mode t)
- '(cua-mode t nil (cua-base))
- '(python-mode-hook (quote (python-setup-brm abbrev-mode turn-on-eldoc-mode imenu-add-menubar-index (lambda nil (define-key python-mode-map "" (quote newline-and-indent))) hs-minor-mode pylint-python-hook)) t)
- '(python-use-skeletons t)
- '(show-paren-mode t)
- '(tool-bar-mode nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Liberation Mono" :foundry "unknown" :slant normal :weight normal :height 109 :width normal)))))
