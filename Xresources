@@ -1,7 +1,7 @@
-! .Xresources
 !
 ! xterm
 !
+XTerm*termName: xterm-256color
 XTerm*utf8: 1
 XTerm*font: -misc-fixed-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
 !XTerm*font: -xos4-terminus-medium-r-normal-*-16-*-*-*-*-*-iso10646-1
@@ -10,10 +10,6 @@ XTerm*metaSendsEscape: true
 XTerm*background: black
 XTerm*foreground: white
 XTerm*cursorColor: white
-XTerm*visualBell: true
-XTerm*saveLines: 4092
-XTerm*scrollBar: false
-XTerm*scrollKey: false
 
 !
 ! rxvt-unicode
@@ -23,6 +19,65 @@ XTerm*scrollKey: false
 !            xft:Code2000:antialias=false
 URxvt.font: -misc-fixed-medium-r-normal-*-15-*-*-*-*-*-iso10646-1
 URxvt*termName: rxvt-256color
+
+!= dwm-colors = !
+!! black dark/light
+URxvt*color0: #222222
+URxvt*color8: #444444
+!! red dark/light
+URxvt*color1: #B10000
+URxvt*color9: #CC0000
+!! green dark/light
+URxvt*color2: #6CB100
+URxvt*color10: #7CCC00
+!! yellow dark/light
+URxvt*color3: #B15C00
+URxvt*color11: #CC6A00
+!! blue dark/light
+URxvt*color4: #005577
+URxvt*color12: #0075A3
+!! magenta dark/light
+URxvt*color5: #5600B1
+URxvt*color13: #6300CC
+!! cyan dark/light
+URxvt*color6: #007177
+URxvt*color14: #009199
+!! white dark/light
+URxvt*color7: #bbbbbb
+URxvt*color15: #eeeeee
+
+URxvt.background: black
+URxvt.foreground: white
+URxvt.color7: white
+
+! !black
+! URxvt.color0:  #000000
+! URxvt.color8:  #2B2B2B
+! !red
+! URxvt.color1:  #A5372E
+! URxvt.color9:  #E06C5C
+! !green
+! URxvt.color2:  #4A663C
+! URxvt.color10: #7B996C
+! !yellow
+! URxvt.color3:  #7C5618
+! URxvt.color11: #B38849
+! !blue
+! URxvt.color4:  #566060
+! URxvt.color12: #889393
+! !magenta
+! URxvt.color5:  #8E4948
+! URxvt.color13: #C67C78
+! !cyan
+! URxvt.color6:  #6D5B42
+! URxvt.color14: #A28D73
+! !white
+! URxvt.color7:  #8D8D8D
+! URxvt.color15: #C6C6C6
+!
+! URxvt.background: #111111
+! URxvt.foreground: 15
+
 URxvt.scrollBar: False
 URxvt.internalBorder: 6
 URxvt.visualBell: True
@@ -66,3 +121,34 @@ Xman*directoryFontNormal:	-misc-fixed-medium-r-normal-*-*-120-*-*-*-*-iso10646-1
 !Xman*directoryFontNormal:	-*-courier-medium-r-*-*-*-120-*-*-*-*-*-*
 !Xman*directoryFontNormal:	-*-helvetica-medium-r-*-*-*-120-*-*-*-*-*-*
 !Xman*directoryFontNormal:	-*-lucida-bold-r-*-*-*-120-*-*-*-*-*-*
+
+!
+! xscreensaver ---------------------------------------------------------------
+!
+!font settings
+xscreensaver.Dialog.headingFont:        -*-dina-bold-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.Dialog.bodyFont:           -*-dina-medium-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.Dialog.labelFont:          -*-dina-medium-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.Dialog.unameFont:          -*-dina-medium-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.Dialog.buttonFont:         -*-dina-bold-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.Dialog.dateFont:           -*-dina-medium-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.passwd.passwdFont:         -*-dina-bold-r-*-*-10-*-*-*-*-*-*-*
+!general dialog box (affects main hostname, username, password text)
+xscreensaver.Dialog.foreground:         #EDEDED
+xscreensaver.Dialog.background:         #202020
+xscreensaver.Dialog.topShadowColor:     #202024
+xscreensaver.Dialog.bottomShadowColor:  #202024
+xscreensaver.Dialog.Button.foreground:  #EDEDFF
+xscreensaver.Dialog.Button.background:  #444
+!username/password input box and date text colour
+xscreensaver.Dialog.text.foreground:    #EDEDFF
+xscreensaver.Dialog.text.background:    #444
+xscreensaver.Dialog.internalBorderWidth:24
+xscreensaver.Dialog.borderWidth:        20
+xscreensaver.Dialog.shadowThickness:    2
+!timeout bar (background is actually determined by Dialog.text.background)
+xscreensaver.passwd.thermometer.foreground:  #A9B7C4
+xscreensaver.passwd.thermometer.background:  #202020
+xscreensaver.passwd.thermometer.width:       8
+!datestamp format--see the strftime(3) manual page for details
+xscreensaver.dateFormat:    %I:%M%P %a %b %d, %Y
