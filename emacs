@@ -3,124 +3,149 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-09-17 15:16:20 drazen>
+;; Time-stamp: <2014-09-19 03:29:06 drazen>
 ;;
 
-(defun terminal-init-screen ()
-  "Terminal initialization function for screen."
-  ;; Use the xterm color initialization code.
-  (load "term/xterm")
-  (xterm-register-default-colors)
-  (tty-set-up-initial-frame-faces))
-
-;; Start server
-;; (server-start)
+;; Packages
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
 
 ;; Set library path
 (setq load-path
       (append (list "~/.emacs.d/lisp")
 	      load-path))
 
-;; elpy
-(package-initialize)
-(elpy-enable)
-
-;; ergoemacs
-;; (require 'ergoemacs-mode)
-;; (setq ergoemacs-theme nil)
-;; (setq ergoemacs-keyboard-layout "us")
-;; (ergoemacs-mode 1)
-
-;; cua mode
-(cua-mode 1)
-
-;; Add time stamp when saving files
-(add-hook 'before-save-hook 'time-stamp)
-
-;; Blinking cursor
-(blink-cursor-mode 0)
-
-;; No scrollbar
-(set-scroll-bar-mode 'left)
-
-;; Mouse scroll
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-
-;; Toolbar
-(tool-bar-mode 0)
-
-;; Set column mode
-(setq column-number-mode t)
-
-;; Show matching parenthesis
-(show-paren-mode t)
-
-;; Ido mode
-(ido-mode t)
-
-;; Disable system bell
-(setq visible-bell t)
-
-;; No file dialog
-(setq use-file-dialog nil)
-
-;; Built-in backup settings
+;; Backup settings
 (setq backup-by-copying t
       backup-directory-alist '(("." . "~/.saves"))
       tramp-backup-directory-alist backup-directory-alist
       delete-old-versions t
-      kept-new-versions 6
-      kept-new-versions 2
+      kept-new-versions 4
       version-control t)
 
-;; By default, use spaces
-; (setq indent-tabs-mode nil)
+;; builtin
+(cua-mode 1)
+(ido-mode t)
+(setq ido-enable-flex-matching t)
+(recentf-mode 1)
+(require 'speedbar)
+(setq speedbar-use-images nil)
+(when window-system
+  (speedbar t))
+;; custom
+(elpy-enable)
+(require 'ahg)
+(require 'autopair)
+(autopair-global-mode)
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(setq web-mode-engines-alist
+      '(("django" . "\\.html\\'")))
+(require 'python-django)
+(require 'smart-tab)
+(global-smart-tab-mode 1)
+(require 'boxquote)
+(require 'w3m-load)
+(require 'bar-cursor)
+(bar-cursor-mode 1)
 
-;; Clear trailing spaces when saving
+;; Saving buffers
+(add-hook 'before-save-hook 'time-stamp)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; Inhibit display of the initial message
-(setq inhibit-splash-screen t)
-
-;; Set transient mode (view rectangle between point and mark)
+;; Visualization
+(blink-cursor-mode t)
+(set-scroll-bar-mode 'left)
+(tool-bar-mode 0)
+(setq column-number-mode t)
+(show-paren-mode t)
+(setq visible-bell t)
+(setq use-file-dialog nil)
+(setq use-dialog-box nil)
+(setq inhibit-splash-screen nil)
 (transient-mark-mode t)
-
-;; Enable narrow-to-region
 (put 'narrow-to-region 'disabled nil)
-
-;; Enable upcase-region
 (put 'upcase-region 'disabled nil)
-
-;; Enable downcase-region
 (put 'downcase-region 'disabled nil)
 
-;; text-mode
-;; (add-hook 'text-mode-hook
-;; 	  (lambda ()
-;; 	    (when (y-or-n-p "Auto Fill mode? ")
-;; 	      (turn-on-auto-fill))))
+;; Mouse
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 
-;; javascript-mode (js2)
-;; (autoload 'js2-mode "js2" nil t)
-;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+;; Keys
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+;; comint keys
+;; comint is a minor-mode for dealing with interpreter commands in buffer
+;; Default to cycle commands is M-p and M-n, this setup use up and down keys
+(define-key comint-mode-map (kbd "M-") 'comint-next-input)
+(define-key comint-mode-map (kbd "M-") 'comint-previous-input)
+(define-key comint-mode-map [down] 'comint-next-matching-input-from-input)
+(define-key comint-mode-map [up] 'comint-previous-matching-input-from-input)
+(global-set-key (kbd "C-s") 'save-buffer)
+(global-set-key (kbd "C-r") 'query-replace)
+(global-set-key (kbd "C-f") 'isearch-forward)
+(global-set-key (kbd "C-d") 'ido-find-file)
+(global-set-key (kbd "C-b") 'ido-switch-buffer)
+(global-set-key (kbd "C-w") 'ido-kill-buffer)
+(global-set-key (kbd "C-1") 'delete-other-windows)
+;; comment-region is bounded to M-;
+;;
+;; other-window
+;; FIXME: not working well in org mode because of the clash with org mode
+;; predifined key combos
+(global-set-key (kbd "M-<up>") 'other-window)
+(global-set-key (kbd "M-<down>") (lambda () (interactive) (other-window -1)))
 
-;; auto-complete
-;; (require 'auto-complete-config)
-;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/lisp/ac-dict")
-;; (ac-config-default)
+;; Functions
+;; Use the xterm color initialization code.
+;; From http://www.emacswiki.org/emacs/GnuScreen
+(defun terminal-init-screen ()
+  "Terminal initialization function for screen."
+  (load "term/xterm")
+  (xterm-register-default-colors)
+  (tty-set-up-initial-frame-faces))
 
-;; autopair
-;; (require 'autopair)
-;; (autopair-global-mode)
+(defun insert-date-string()
+  "Insert a nicely formated date string."
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d")))
 
-;; mail-mode
-;; (add-to-list 'auto-mode-alist
-;; 	     '("\\.*mutt-*\\|.article\\|\\.followup"
-;; 	       . mail-mode))
-;; (add-hook 'mail-mode-hook 'turn-on-auto-fill)
+(defun show-file-name ()
+  "Show the full path file name in the minibuffer."
+  (interactive)
+  (message (buffer-file-name)))
 
-;; calendar localization
-;; (croat-calendar)
+;; From: http://stackoverflow.com/questions/435847/emacs-mode-to-edit-json
+(defun beautify-json ()
+  "Beautify JSON object in region if active, otherwise in whole buffer."
+  (interactive)
+  (let ((b (if mark-active (min (point) (mark)) (point-min)))
+	(e (if mark-active (max (point) (mark)) (point-max))))
+    (shell-command-on-region
+     b e
+     "python -mjson.tool" (current-buffer) t)))
+
+;; Display
+;;
+;; load theme
+(load-theme 'adwaita)
+;;
+;; Dark theme
+;; (set-foreground-color "gray90")
+;; (set-background-color "gray10")
+;; (set-cursor-color "gray80")
+;;
+;; Light theme
+;; (set-foreground-color "gray10")
+;; (set-background-color "gray95")
+;; (set-cursor-color "ForestGreen")
+
+;; (add-to-list 'default-frame-alist '(foreground-color . "gray10"))
+;; (add-to-list 'default-frame-alist '(background-color . "#f2f2f2"))
+;; (add-to-list 'default-frame-alist '(cursor-color . "gray50"))
+
+;; Calendar localization
 (setq calendar-week-start-day 1
       calendar-day-name-array
       ["Nedjelja" "Ponedjeljak" "Utorak"
@@ -130,83 +155,8 @@
        "Svibanj" "Lipanj" "Srpanj" "Kolovoz"
        "Rujan" "Listopad" "Studeni" "Prosinac"])
 
-;; recentf-mode
-(recentf-mode 1)
-
-;; smart-tab
-;; (require 'smart-tab)
-
-;; boxquote
-;; (require 'boxquote)
-
-;; sr-speedbar
-(require 'sr-speedbar)
-
-;; tabbar
-(require 'tabbar)
-;; w3m
-(require 'w3m-load)
-
-
-;; E l i s p   f u n c t i o n s
-(defun insert-date-string()
-  "Insert a nicely formated date string."
-  (interactive)
-  (insert (format-time-string "%Y-%m-%d")))
-
-;; K e y s
-
-;; hippie-expand
-(global-set-key (kbd "C-<return>") 'hippie-expand)
-
-;; save-buffer
-;; (global-set-key (kbd "C-s") 'save-buffer)
-
-;; isearch-forward
-;; (global-set-key (kbd "C-f") 'isearch-forward)
-
-;; comment-region
-;; FIXME: C-S-c key combo does work very well. It gives C-c in minibuffer,
-;; as it is not aware of Shift key being pressed.
-(global-set-key (kbd "C-S-c") 'comment-region)
-
-;; other-window
-(global-set-key (kbd "M-<up>") 'other-window)
-(global-set-key (kbd "M-<down>") (lambda () (interactive) (other-window -1)))
-
-;; goto-line
-;; (global-set-key (kbd "M-g") 'goto-line)
-
-;; hs-toggle-hiding
-;; (global-set-key (kbd "<backtab>") 'hs-toggle-hiding)
-
-;; server-edit
-;; (global-set-key (kbd "<f9>") 'server-edit)
-
-;; reply-format
-;; (global-set-key (kbd "<f7>") 'reply-format)
-
-;; D i s p l a y
-
-;; load theme
-;; (load-theme 'light-blue)
-
-;; Dark theme
-;; (set-foreground-color "gray90")
-;; (set-background-color "gray10")
-;; (set-cursor-color "gray80")
-
-;; Light theme
-;; (set-foreground-color "gray10")
-;; (set-background-color "gray95")
-;; (set-cursor-color "gray20")
-
-(add-to-list 'default-frame-alist '(foreground-color . "gray10"))
-(add-to-list 'default-frame-alist '(background-color . "#f2f2f2"))  ; gray95
-(add-to-list 'default-frame-alist '(cursor-color . "gray50"))
-
 ;;
-;; H e l p   s e c t i o n
+;; Help and references
 ;;
 ;; Rectangles
 ;; ------------------------------------------------------------------
@@ -217,18 +167,16 @@
 ;; C-x r c 	Clear rectangle
 ;;
 ;; Commands
-;; -------------------------------------------------------------------
+;;
 ;; string-insert-rectangle
 ;; string-rectangle
 ;;
+;;
 ;; YesOrNop
+;; ------------------------------------------------------------------
 ;;
 ;; (defalias 'yes-or-no-p 'y-or-n-p)
 ;;
-;; Exiting
-;; -------------------------------------------------------------------
-;; kill-emacs
-;; save-buffers-kill-emacs
 ;;
 ;; Dired
 ;; -------------------------------------------------------------------
@@ -241,6 +189,7 @@
 ;; may be hazardous to your health.
 ;; Anything else means ask for each directory (including subdirectories).
 ;;
+;;
 ;; Numbers in registers
 ;; -------------------------------------------------------------------
 ;; C-u 1000 C-x r n x
@@ -250,6 +199,7 @@
 ;; C-x r + x
 ;; Increment the number by one
 ;;
+;;
 ;; Registers
 ;; -------------------------------------------------------------------
 ;; Store current window configuration
@@ -257,10 +207,12 @@
 ;; Restore window configuration
 ;; C-x r j REGISTER
 ;;
+;;
 ;; What did I just do?
 ;; -------------------------------------------------------------------
 ;;
 ;; M-x view-lossage
+;;
 ;;
 ;; Display character map
 ;; -------------------------------------------------------------------
@@ -272,10 +224,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults))))
+ '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
+ '(ido-separator nil)
+ '(python-check-command "flake8"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(ido-subdir ((t (:foreground "#cd5c5c")))))
