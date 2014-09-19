@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-09-19 03:29:06 drazen>
+;; Time-stamp: <2014-09-19 23:01:06 drazen>
 ;;
 
 ;; Packages
@@ -30,12 +30,14 @@
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 (recentf-mode 1)
-(require 'speedbar)
+(require 'sr-speedbar)
 (setq speedbar-use-images nil)
-(when window-system
-  (speedbar t))
+(unless window-system
+  (xterm-mouse-mode t))
 ;; custom
 (elpy-enable)
+(load-library "zrinski")
+(defalias 'workon 'pyvenv-workon)
 (require 'ahg)
 (require 'autopair)
 (autopair-global-mode)
@@ -44,12 +46,11 @@
 (setq web-mode-engines-alist
       '(("django" . "\\.html\\'")))
 (require 'python-django)
-(require 'smart-tab)
-(global-smart-tab-mode 1)
 (require 'boxquote)
 (require 'w3m-load)
-(require 'bar-cursor)
-(bar-cursor-mode 1)
+(when window-system
+  (require 'bar-cursor)
+  (bar-cursor-mode t))
 
 ;; Saving buffers
 (add-hook 'before-save-hook 'time-stamp)
@@ -57,11 +58,11 @@
 
 ;; Visualization
 (blink-cursor-mode t)
-(set-scroll-bar-mode 'left)
+(set-scroll-bar-mode nil)
 (tool-bar-mode 0)
 (setq column-number-mode t)
 (show-paren-mode t)
-(setq visible-bell t)
+(setq visible-bell nil)
 (setq use-file-dialog nil)
 (setq use-dialog-box nil)
 (setq inhibit-splash-screen nil)
@@ -69,6 +70,7 @@
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+(windmove-default-keybindings 'meta)
 
 ;; Mouse
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
@@ -85,17 +87,13 @@
 (global-set-key (kbd "C-s") 'save-buffer)
 (global-set-key (kbd "C-r") 'query-replace)
 (global-set-key (kbd "C-f") 'isearch-forward)
-(global-set-key (kbd "C-d") 'ido-find-file)
+(global-set-key (kbd "<f3>") 'isearch-forward)
+(global-set-key (kbd "<f2>") 'ido-find-file)
 (global-set-key (kbd "C-b") 'ido-switch-buffer)
 (global-set-key (kbd "C-w") 'ido-kill-buffer)
 (global-set-key (kbd "C-1") 'delete-other-windows)
-;; comment-region is bounded to M-;
-;;
-;; other-window
-;; FIXME: not working well in org mode because of the clash with org mode
-;; predifined key combos
-(global-set-key (kbd "M-<up>") 'other-window)
-(global-set-key (kbd "M-<down>") (lambda () (interactive) (other-window -1)))
+;; comment-region is by default bounded to M-;
+(global-set-key (kbd "M-Č") 'comment-dwim)
 
 ;; Functions
 ;; Use the xterm color initialization code.
@@ -129,7 +127,8 @@
 ;; Display
 ;;
 ;; load theme
-(load-theme 'adwaita)
+(when window-system
+  (load-theme 'adwaita))
 ;;
 ;; Dark theme
 ;; (set-foreground-color "gray90")
@@ -232,4 +231,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(eshell-prompt ((t (:foreground "IndianRed" :weight bold))))
+ '(eshell-prompt-face ((t (:foreground "IndianRed" :weight bold))) t)
  '(ido-subdir ((t (:foreground "#cd5c5c")))))
