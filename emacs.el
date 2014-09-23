@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-09-19 23:08:17 drazen>
+;; Time-stamp: <2014-09-23 14:23:11 drazen>
 ;;
 
 ;; Packages
@@ -44,7 +44,7 @@
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (setq web-mode-engines-alist
       '(("django" . "\\.html\\'")))
-(require 'python-django)
+;(require 'python-django)
 (require 'boxquote)
 (require 'w3m-load)
 (when window-system
@@ -93,6 +93,21 @@
 (global-set-key (kbd "C-1") 'delete-other-windows)
 ;; comment-region is by default bounded to M-;
 (global-set-key (kbd "M-Č") 'comment-dwim)
+(global-set-key (kbd "M-w") 'mark-word)
+(global-set-key (kbd "M-RET") 'hippie-expand)
+;; reset elpy meta-<arrows> keys
+(eval-after-load "elpy"
+  '(cl-dolist (key '("M-<up>" "M-<down>" "M-<left>" "M-<right>"))
+     (define-key elpy-mode-map (kbd key) nil)))
+(defun set-newline-and-indent ()
+  (local-set-key (kbd "C-m") 'newline-and-indent))
+(defun set-hs-keys ()
+  (local-set-key (kbd "<kp-add>") 'hs-show-block)
+  (local-set-key (kbd "<kp-subtract>") 'hs-hide-block))
+(add-hook 'python-mode-hook 'set-newline-and-indent)
+(add-hook 'python-mode-hook 'hs-minor-mode)
+(add-hook 'python-mode-hook 'set-hs-keys)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Functions
 ;; Use the xterm color initialization code.
@@ -123,11 +138,31 @@
      b e
      "python -mjson.tool" (current-buffer) t)))
 
+
+(defun elpy-test-k2-runner (top file module test)
+  "Test the project using the Django discover runner.
+
+Use devmanage.py as main script for running the tests, rather
+than global django-admin.py script.
+This requires Django 1.6 or the django-discover-runner package."
+  (interactive (elpy-test-at-point))
+  (if module
+      (elpy-test-run top
+                     "python" "devmanage.py" "test" "--noinput"
+                     (if test
+                         (format "%s.%s" module test)
+                       module))
+    (elpy-test-run top
+                   "python" "devmanage.py" "test" "--noinput")))
+
+(global-set-key (kbd "<f5>") 'elpy-test-k2-runner)
+
 ;; Display
 ;;
 ;; load theme
 (when window-system
-  (load-theme 'adwaita))
+  (load-theme 'misterioso)
+  (set-cursor-color "IndianRed"))
 ;;
 ;; Dark theme
 ;; (set-foreground-color "gray90")
