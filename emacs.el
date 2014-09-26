@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-09-23 14:23:11 drazen>
+;; Time-stamp: <2014-09-27 00:37:32 drazen>
 ;;
 
 ;; Packages
@@ -39,17 +39,26 @@
 (defalias 'workon 'pyvenv-workon)
 (require 'ahg)
 (require 'autopair)
-(autopair-global-mode)
+;; (autopair-global-mode)
+(add-hook 'c-mode-common-hook '(lambda () (autopair-mode)))
+(add-hook 'python-mode-hook '(lambda () (autopair-mode)))
+(add-hook 'lisp-mode-hook '(lambda () (autopair-mode)))
+(add-hook 'emacs-lisp-mode-hook '(lambda () (autopair-mode)))
 (require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (setq web-mode-engines-alist
       '(("django" . "\\.html\\'")))
+(setq web-mode-comment-style 1)
 ;(require 'python-django)
 (require 'boxquote)
 (require 'w3m-load)
 (when window-system
   (require 'bar-cursor)
   (bar-cursor-mode t))
+
+;; Indentation
+(setq-default indent-tabs-mode nil)             ; use spaces everywhere
+(setq-default py-indent-offset 4)
 
 ;; Saving buffers
 (add-hook 'before-save-hook 'time-stamp)
@@ -161,8 +170,8 @@ This requires Django 1.6 or the django-discover-runner package."
 ;;
 ;; load theme
 (when window-system
-  (load-theme 'misterioso)
-  (set-cursor-color "IndianRed"))
+  (load-theme 'light-blue))
+  ;; (add-to-list 'default-frame-alist '(cursor-color . "IndianRed")))
 ;;
 ;; Dark theme
 ;; (set-foreground-color "gray90")
@@ -257,14 +266,19 @@ This requires Django 1.6 or the django-discover-runner package."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(cua-mode t nil (cua-base))
  '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
  '(ido-separator nil)
- '(python-check-command "flake8"))
+ '(python-check-command "flake8")
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 100 :width normal))))
  '(eshell-prompt ((t (:foreground "IndianRed" :weight bold))))
  '(eshell-prompt-face ((t (:foreground "IndianRed" :weight bold))) t)
  '(ido-subdir ((t (:foreground "#cd5c5c")))))
