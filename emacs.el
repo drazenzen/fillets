@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-09-27 00:37:32 drazen>
+;; Time-stamp: <2014-09-27 13:10:06 drazen>
 ;;
 
 ;; Packages
@@ -112,7 +112,9 @@
   (local-set-key (kbd "C-m") 'newline-and-indent))
 (defun set-hs-keys ()
   (local-set-key (kbd "<kp-add>") 'hs-show-block)
-  (local-set-key (kbd "<kp-subtract>") 'hs-hide-block))
+  (local-set-key (kbd "C-<kp-add>") 'hs-show-all)
+  (local-set-key (kbd "<kp-subtract>") 'hs-hide-block)
+  (local-set-key (kbd "C-<kp-subtract>") 'hs-hide-all))
 (add-hook 'python-mode-hook 'set-newline-and-indent)
 (add-hook 'python-mode-hook 'hs-minor-mode)
 (add-hook 'python-mode-hook 'set-hs-keys)
