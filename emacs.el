@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-09-27 13:10:06 drazen>
+;; Time-stamp: <2014-10-01 13:22:29 drazen>
 ;;
 
 ;; Packages
@@ -58,7 +58,7 @@
 
 ;; Indentation
 (setq-default indent-tabs-mode nil)             ; use spaces everywhere
-(setq-default py-indent-offset 4)
+(setq-default python-indent-offset 4)
 
 ;; Saving buffers
 (add-hook 'before-save-hook 'time-stamp)
@@ -101,7 +101,6 @@
 (global-set-key (kbd "C-w") 'ido-kill-buffer)
 (global-set-key (kbd "C-1") 'delete-other-windows)
 ;; comment-region is by default bounded to M-;
-(global-set-key (kbd "M-Č") 'comment-dwim)
 (global-set-key (kbd "M-w") 'mark-word)
 (global-set-key (kbd "M-RET") 'hippie-expand)
 ;; reset elpy meta-<arrows> keys
