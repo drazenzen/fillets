@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-10-01 13:22:29 drazen>
+;; Time-stamp: <2014-10-02 22:34:04 drazen>
 ;;
 
 ;; Packages
@@ -95,7 +95,6 @@
 (global-set-key (kbd "C-s") 'save-buffer)
 (global-set-key (kbd "C-r") 'query-replace)
 (global-set-key (kbd "C-f") 'isearch-forward)
-(global-set-key (kbd "<f3>") 'isearch-forward)
 (global-set-key (kbd "<f2>") 'ido-find-file)
 (global-set-key (kbd "C-b") 'ido-switch-buffer)
 (global-set-key (kbd "C-w") 'ido-kill-buffer)
@@ -282,4 +281,6 @@ This requires Django 1.6 or the django-discover-runner package."
  '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 100 :width normal))))
  '(eshell-prompt ((t (:foreground "IndianRed" :weight bold))))
  '(eshell-prompt-face ((t (:foreground "IndianRed" :weight bold))) t)
- '(ido-subdir ((t (:foreground "#cd5c5c")))))
+ '(flymake-errline ((((class color)) (:underline "Sienna"))))
+ '(flymake-warnline ((((class color)) (:underline "Peru"))))
+ '(ido-subdir ((t (:foreground "IndianRed")))))
