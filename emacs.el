@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-10-02 22:34:04 drazen>
+;; Time-stamp: <2014-10-05 21:26:30 drazen>
 ;;
 
 ;; Packages
@@ -68,6 +68,7 @@
 (blink-cursor-mode t)
 (set-scroll-bar-mode nil)
 (tool-bar-mode 0)
+(menu-bar-mode 0)
 (setq column-number-mode t)
 (show-paren-mode t)
 (setq visible-bell nil)
@@ -88,8 +89,8 @@
 ;; comint keys
 ;; comint is a minor-mode for dealing with interpreter commands in buffer
 ;; Default to cycle commands is M-p and M-n, this setup use up and down keys
-(define-key comint-mode-map (kbd "M-") 'comint-next-input)
-(define-key comint-mode-map (kbd "M-") 'comint-previous-input)
+(define-key comint-mode-map (kbd "M-n") 'comint-next-input)
+(define-key comint-mode-map (kbd "M-p") 'comint-previous-input)
 (define-key comint-mode-map [down] 'comint-next-matching-input-from-input)
 (define-key comint-mode-map [up] 'comint-previous-matching-input-from-input)
 (global-set-key (kbd "C-s") 'save-buffer)
@@ -170,7 +171,7 @@ This requires Django 1.6 or the django-discover-runner package."
 ;;
 ;; load theme
 (when window-system
-  (load-theme 'light-blue))
+  (load-theme 'deeper-blue))
   ;; (add-to-list 'default-frame-alist '(cursor-color . "IndianRed")))
 ;;
 ;; Dark theme
