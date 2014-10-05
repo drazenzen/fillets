@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-10-05 21:26:30 drazen>
+;; Time-stamp: <2014-10-05 22:51:38 drazen>
 ;;
 
 ;; Packages
@@ -68,7 +68,7 @@
 (blink-cursor-mode t)
 (set-scroll-bar-mode nil)
 (tool-bar-mode 0)
-(menu-bar-mode 0)
+(menu-bar-mode 1)
 (setq column-number-mode t)
 (show-paren-mode t)
 (setq visible-bell nil)
@@ -98,7 +98,8 @@
 (global-set-key (kbd "C-f") 'isearch-forward)
 (global-set-key (kbd "<f2>") 'ido-find-file)
 (global-set-key (kbd "C-b") 'ido-switch-buffer)
-(global-set-key (kbd "C-w") 'ido-kill-buffer)
+(global-set-key (kbd "C-'") 'ido-kill-buffer)
+(global-set-key (kbd "C-w") 'er/expand-region)
 (global-set-key (kbd "C-1") 'delete-other-windows)
 ;; comment-region is by default bounded to M-;
 (global-set-key (kbd "M-w") 'mark-word)
