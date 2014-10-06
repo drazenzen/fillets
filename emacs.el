@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-10-05 22:51:38 drazen>
+;; Time-stamp: <2014-10-06 23:37:29 drazen>
 ;;
 
 ;; Packages
@@ -120,6 +120,15 @@
 (add-hook 'python-mode-hook 'set-hs-keys)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+;; po-mode for working with gettext
+(autoload 'po-mode "po-mode"
+  "Major mode for translators to edit PO files" t)
+(setq auto-mode-alist (cons '("\\.po\\'\\|\\.po\\." . po-mode)
+                            auto-mode-alist))
+(autoload 'po-find-file-coding-system "po-compat")
+(modify-coding-system-alist 'file "\\.po\\'\\|\\.po\\."
+                            'po-find-file-coding-system)
+
 ;; Functions
 ;; Use the xterm color initialization code.
 ;; From http://www.emacswiki.org/emacs/GnuScreen
@@ -168,11 +177,25 @@ This requires Django 1.6 or the django-discover-runner package."
 
 (global-set-key (kbd "<f5>") 'elpy-test-k2-runner)
 
+(defun buff-rename ()
+  "Rename buffer so that new buffer name is in form: dirname/filename.
+
+Used mainly for Django projects where there are a lot of files with same names.
+"
+  (interactive)
+  (let ((sname (split-string buffer-file-name "/")))
+  ;; simple debug
+  ;; (message "Length: %d" (length sname))
+  ;; (message "Last: %s" (nth (- (length sname) 1) sname))
+  ;; (message "New name: %s" (concat (nth (- (length sname) 2) sname) "/" (nth (- (length sname) 1) sname)))
+  (rename-buffer (concat (nth (- (length sname) 2) sname) "/" (nth (- (length sname) 1) sname)))
+  ))
+
 ;; Display
 ;;
 ;; load theme
 (when window-system
-  (load-theme 'deeper-blue))
+  (load-theme 'adwaita))
   ;; (add-to-list 'default-frame-alist '(cursor-color . "IndianRed")))
 ;;
 ;; Dark theme
@@ -201,6 +224,12 @@ This requires Django 1.6 or the django-discover-runner package."
 
 ;;
 ;; Help and references
+;;
+;; Load library
+;; ------------------------------------------------------------------
+;;
+;; M-x load-library library
+;;
 ;;
 ;; Rectangles
 ;; ------------------------------------------------------------------
