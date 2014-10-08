@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-10-06 23:37:29 drazen>
+;; Time-stamp: <2014-10-09 01:09:04 drazen>
 ;;
 
 ;; Packages
@@ -30,7 +30,6 @@
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 (recentf-mode 1)
-(require 'sr-speedbar)
 (setq speedbar-use-images nil)
 (unless window-system
   (xterm-mouse-mode t))
@@ -38,6 +37,7 @@
 (elpy-enable)
 (defalias 'workon 'pyvenv-workon)
 (require 'ahg)
+(require 'sr-speedbar)
 (require 'autopair)
 ;; (autopair-global-mode)
 (add-hook 'c-mode-common-hook '(lambda () (autopair-mode)))
@@ -49,7 +49,9 @@
 (setq web-mode-engines-alist
       '(("django" . "\\.html\\'")))
 (setq web-mode-comment-style 1)
-;(require 'python-django)
+(add-hook 'web-mode-hook
+          (lambda ()
+            (set-fill-column 100)))     ; use 100 column rule for html files
 (require 'boxquote)
 (require 'w3m-load)
 (when window-system
@@ -120,15 +122,6 @@
 (add-hook 'python-mode-hook 'set-hs-keys)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-;; po-mode for working with gettext
-(autoload 'po-mode "po-mode"
-  "Major mode for translators to edit PO files" t)
-(setq auto-mode-alist (cons '("\\.po\\'\\|\\.po\\." . po-mode)
-                            auto-mode-alist))
-(autoload 'po-find-file-coding-system "po-compat")
-(modify-coding-system-alist 'file "\\.po\\'\\|\\.po\\."
-                            'po-find-file-coding-system)
-
 ;; Functions
 ;; Use the xterm color initialization code.
 ;; From http://www.emacswiki.org/emacs/GnuScreen
@@ -184,19 +177,20 @@ Used mainly for Django projects where there are a lot of files with same names.
 "
   (interactive)
   (let ((sname (split-string buffer-file-name "/")))
-  ;; simple debug
-  ;; (message "Length: %d" (length sname))
-  ;; (message "Last: %s" (nth (- (length sname) 1) sname))
-  ;; (message "New name: %s" (concat (nth (- (length sname) 2) sname) "/" (nth (- (length sname) 1) sname)))
-  (rename-buffer (concat (nth (- (length sname) 2) sname) "/" (nth (- (length sname) 1) sname)))
-  ))
+    ;; simple debug
+    ;; (message "Length: %d" (length sname))
+    ;; (message "Last: %s" (nth (- (length sname) 1) sname))
+    (rename-buffer
+     (concat (nth (- (length sname) 2) sname) "/" (nth (- (length sname) 1) sname)))
+    (message "New name: %s" (buffer-name))
+    ))
 
 ;; Display
-;;
+;; custom themes
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 ;; load theme
 (when window-system
   (load-theme 'adwaita))
-  ;; (add-to-list 'default-frame-alist '(cursor-color . "IndianRed")))
 ;;
 ;; Dark theme
 ;; (set-foreground-color "gray90")
@@ -207,7 +201,7 @@ Used mainly for Django projects where there are a lot of files with same names.
 ;; (set-foreground-color "gray10")
 ;; (set-background-color "gray95")
 ;; (set-cursor-color "ForestGreen")
-
+;;
 ;; (add-to-list 'default-frame-alist '(foreground-color . "gray10"))
 ;; (add-to-list 'default-frame-alist '(background-color . "#f2f2f2"))
 ;; (add-to-list 'default-frame-alist '(cursor-color . "gray50"))
@@ -222,8 +216,31 @@ Used mainly for Django projects where there are a lot of files with same names.
        "Svibanj" "Lipanj" "Srpanj" "Kolovoz"
        "Rujan" "Listopad" "Studeni" "Prosinac"])
 
-;;
 ;; Help and references
+;;
+;; Remove hook
+;; ------------------------------------------------------------------
+;;
+;; e.g.
+;; (add-hook 'web-mode-hook
+;;          (lambda ()
+;;            (set-fill-column 100)))
+;; (remove-hook 'web-mode-hook (lambda nil (set-fill-column 120)))
+;;
+;;
+;; Reload / Revert multiple buffers
+;; ------------------------------------------------------------------
+;; example reason:
+;; Added new hook for some mode and all buffers in that mode need to
+;; be updated.
+;;
+;; M-x ibuffer or C-x C-b
+;;
+;; In *Ibuffer* window:
+;;
+;; % m (mark all buffers by ther major mode, using regexp)
+;; V (revert marked buffers to activate newly added hook :)
+;;
 ;;
 ;; Load library
 ;; ------------------------------------------------------------------
@@ -299,6 +316,7 @@ Used mainly for Django projects where there are a lot of files with same names.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(cua-mode t nil (cua-base))
+ '(custom-safe-themes (quote ("39dd7106e6387e0c45dfce8ed44351078f6acd29a345d8b22e7b8e54ac25bac4" "2588175e0f3591583582a72c465e6d38bd8c99b36daee949ab08f1e758052117" "6ed61522770067a63d7cfe797bede622fa69c975dd0882c7cb706e2ddb464a32" "b9183de9666c3a16a7ffa7faaa8e9941b8d0ab50f9aaba1ca49f2f3aec7e3be9" "caa9a86ff9b85f733b424f520ec6ecff3499a36f20eb8d40e3096dbbe1884069" default)))
  '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
  '(ido-separator nil)
  '(python-check-command "flake8")
@@ -310,7 +328,7 @@ Used mainly for Django projects where there are a lot of files with same names.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 100 :width normal))))
- '(eshell-prompt ((t (:foreground "IndianRed" :weight bold))))
+ '(eshell-prompt ((t (:foreground "IndianRed" :weight bold))) t)
  '(eshell-prompt-face ((t (:foreground "IndianRed" :weight bold))) t)
  '(flymake-errline ((((class color)) (:underline "Sienna"))))
  '(flymake-warnline ((((class color)) (:underline "Peru"))))
