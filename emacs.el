@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-10-14 18:10:59 drazen>
+;; Time-stamp: <2014-10-15 00:35:08 drazen>
 ;;
 
 ;; Packages
@@ -33,10 +33,12 @@
 (setq speedbar-use-images nil)
 (unless window-system
   (xterm-mouse-mode t))
+(add-hook 'dired-mode-hook '(lambda () (hl-line-mode)))
 ;; custom
 (elpy-enable)
 (defalias 'workon 'pyvenv-workon)
 (require 'ahg)
+(global-set-key (kbd "<f8>") 'ahg-status)
 (require 'sr-speedbar)
 (require 'autopair)
 ;; (autopair-global-mode)
@@ -336,7 +338,7 @@ This requires Django 1.6 or the django-discover-runner package."
  '(column-number-mode t)
  '(cua-mode t nil (cua-base))
  '(custom-safe-themes (quote ("0ae977e603e99d89c80d679377bfed4a904317968bd885ee063455cee01728d3" "39dd7106e6387e0c45dfce8ed44351078f6acd29a345d8b22e7b8e54ac25bac4" "2588175e0f3591583582a72c465e6d38bd8c99b36daee949ab08f1e758052117" "6ed61522770067a63d7cfe797bede622fa69c975dd0882c7cb706e2ddb464a32" "b9183de9666c3a16a7ffa7faaa8e9941b8d0ab50f9aaba1ca49f2f3aec7e3be9" "caa9a86ff9b85f733b424f520ec6ecff3499a36f20eb8d40e3096dbbe1884069" default)))
- '(elpy-mode-hook (quote (hl-line-mode)))
+ '(elpy-mode-hook nil)
  '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
  '(ido-separator nil)
  '(python-check-command "flake8")
@@ -347,7 +349,6 @@ This requires Django 1.6 or the django-discover-runner package."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- ;; '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 100 :width normal))))
  '(eshell-prompt ((t (:foreground "IndianRed" :weight bold))) t)
  '(eshell-prompt-face ((t (:foreground "IndianRed" :weight bold))) t)
  '(flymake-errline ((((class color)) (:underline "Sienna"))))
