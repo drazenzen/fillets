@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-10-09 01:09:04 drazen>
+;; Time-stamp: <2014-10-14 16:49:47 drazen>
 ;;
 
 ;; Packages
@@ -100,7 +100,7 @@
 (global-set-key (kbd "C-f") 'isearch-forward)
 (global-set-key (kbd "<f2>") 'ido-find-file)
 (global-set-key (kbd "C-b") 'ido-switch-buffer)
-(global-set-key (kbd "C-'") 'ido-kill-buffer)
+(global-set-key (kbd "C-'") 'kill-this-buffer)
 (global-set-key (kbd "C-w") 'er/expand-region)
 (global-set-key (kbd "C-1") 'delete-other-windows)
 ;; comment-region is by default bounded to M-;
@@ -117,9 +117,12 @@
   (local-set-key (kbd "C-<kp-add>") 'hs-show-all)
   (local-set-key (kbd "<kp-subtract>") 'hs-hide-block)
   (local-set-key (kbd "C-<kp-subtract>") 'hs-hide-all))
+(defun set-docstring-fill-column()
+  (set-fill-column 72))
 (add-hook 'python-mode-hook 'set-newline-and-indent)
 (add-hook 'python-mode-hook 'hs-minor-mode)
 (add-hook 'python-mode-hook 'set-hs-keys)
+(add-hook 'python-mode-hook 'set-docstring-fill-column)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Functions
@@ -184,6 +187,7 @@ Used mainly for Django projects where there are a lot of files with same names.
      (concat (nth (- (length sname) 2) sname) "/" (nth (- (length sname) 1) sname)))
     (message "New name: %s" (buffer-name))
     ))
+(global-set-key (kbd "<f6>") 'buff-rename)
 
 ;; Display
 ;; custom themes
@@ -201,6 +205,9 @@ Used mainly for Django projects where there are a lot of files with same names.
 ;; (set-foreground-color "gray10")
 ;; (set-background-color "gray95")
 ;; (set-cursor-color "ForestGreen")
+;;
+;; (set-background-color "darkslategray")
+;; (set-foreground-color "wheat")
 ;;
 ;; (add-to-list 'default-frame-alist '(foreground-color . "gray10"))
 ;; (add-to-list 'default-frame-alist '(background-color . "#f2f2f2"))
@@ -317,11 +324,14 @@ Used mainly for Django projects where there are a lot of files with same names.
  '(column-number-mode t)
  '(cua-mode t nil (cua-base))
  '(custom-safe-themes (quote ("39dd7106e6387e0c45dfce8ed44351078f6acd29a345d8b22e7b8e54ac25bac4" "2588175e0f3591583582a72c465e6d38bd8c99b36daee949ab08f1e758052117" "6ed61522770067a63d7cfe797bede622fa69c975dd0882c7cb706e2ddb464a32" "b9183de9666c3a16a7ffa7faaa8e9941b8d0ab50f9aaba1ca49f2f3aec7e3be9" "caa9a86ff9b85f733b424f520ec6ecff3499a36f20eb8d40e3096dbbe1884069" default)))
+ '(elpy-mode-hook nil)
  '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
+ '(elpy-rpc-backend "jedi")
  '(ido-separator nil)
+ '(menu-bar-mode nil)
  '(python-check-command "flake8")
- '(show-paren-mode t)
- '(tool-bar-mode nil))
+ '(scroll-bar-mode nil)
+ '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
