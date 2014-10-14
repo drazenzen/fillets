@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-10-14 16:49:47 drazen>
+;; Time-stamp: <2014-10-14 18:10:59 drazen>
 ;;
 
 ;; Packages
@@ -173,11 +173,22 @@ This requires Django 1.6 or the django-discover-runner package."
 
 (global-set-key (kbd "<f5>") 'elpy-test-k2-runner)
 
-(defun buff-rename ()
-  "Rename buffer so that new buffer name is in form: dirname/filename.
+(defun insert-python-doc-string ()
+  "Insert empty python doc string."
+  (interactive)
+  (end-of-line)
+  (newline-and-indent)
+  (insert "\"\"\"")
+  (end-of-line)
+  (newline-and-indent)
+  (newline-and-indent)
+  (insert "\"\"\"")
+  (previous-line)
+  )
+(global-set-key (kbd "<f7>") 'insert-python-doc-string)
 
-Used mainly for Django projects where there are a lot of files with same names.
-"
+(defun buff-rename ()
+  "Rename buffer so that new buffer name is in form: dirname/filename."
   (interactive)
   (let ((sname (split-string buffer-file-name "/")))
     ;; simple debug
@@ -321,23 +332,22 @@ Used mainly for Django projects where there are a lot of files with same names.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector ["black" "light gray" "dark gray" "light slate gray"])
  '(column-number-mode t)
  '(cua-mode t nil (cua-base))
- '(custom-safe-themes (quote ("39dd7106e6387e0c45dfce8ed44351078f6acd29a345d8b22e7b8e54ac25bac4" "2588175e0f3591583582a72c465e6d38bd8c99b36daee949ab08f1e758052117" "6ed61522770067a63d7cfe797bede622fa69c975dd0882c7cb706e2ddb464a32" "b9183de9666c3a16a7ffa7faaa8e9941b8d0ab50f9aaba1ca49f2f3aec7e3be9" "caa9a86ff9b85f733b424f520ec6ecff3499a36f20eb8d40e3096dbbe1884069" default)))
- '(elpy-mode-hook nil)
+ '(custom-safe-themes (quote ("0ae977e603e99d89c80d679377bfed4a904317968bd885ee063455cee01728d3" "39dd7106e6387e0c45dfce8ed44351078f6acd29a345d8b22e7b8e54ac25bac4" "2588175e0f3591583582a72c465e6d38bd8c99b36daee949ab08f1e758052117" "6ed61522770067a63d7cfe797bede622fa69c975dd0882c7cb706e2ddb464a32" "b9183de9666c3a16a7ffa7faaa8e9941b8d0ab50f9aaba1ca49f2f3aec7e3be9" "caa9a86ff9b85f733b424f520ec6ecff3499a36f20eb8d40e3096dbbe1884069" default)))
+ '(elpy-mode-hook (quote (hl-line-mode)))
  '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
- '(elpy-rpc-backend "jedi")
  '(ido-separator nil)
- '(menu-bar-mode nil)
  '(python-check-command "flake8")
- '(scroll-bar-mode nil)
- '(show-paren-mode t))
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 100 :width normal))))
+ ;; '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 100 :width normal))))
  '(eshell-prompt ((t (:foreground "IndianRed" :weight bold))) t)
  '(eshell-prompt-face ((t (:foreground "IndianRed" :weight bold))) t)
  '(flymake-errline ((((class color)) (:underline "Sienna"))))
