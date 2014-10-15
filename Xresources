@@ -98,6 +98,7 @@ URxvt.tabbed.tabbar-bg: white
 ! * Emacs
 !
 Emacs*font: 8x13
+Emacs*toolBar: 0
 ! Emacs*font: -xos4-terminus-medium-r-normal-*-16-*-*-*-*-*-*-*
 ! Emacs*font: -misc-fixed-medium-r-normal-*-*-120-*-*-*-*-iso10646-1
 ! Emacs*pane*menubar*font: -dec-terminal-bold-r-normal-*-14-140-75-75-c-80-iso8859-1
