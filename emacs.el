@@ -3,7 +3,7 @@
 ;;
 ;; Creation-date: 28.10.2007.
 ;;
-;; Time-stamp: <2014-10-15 00:35:08 drazen>
+;; Time-stamp: <2014-10-15 16:38:59 drazen>
 ;;
 
 ;; Packages
@@ -340,10 +340,10 @@ This requires Django 1.6 or the django-discover-runner package."
  '(custom-safe-themes (quote ("0ae977e603e99d89c80d679377bfed4a904317968bd885ee063455cee01728d3" "39dd7106e6387e0c45dfce8ed44351078f6acd29a345d8b22e7b8e54ac25bac4" "2588175e0f3591583582a72c465e6d38bd8c99b36daee949ab08f1e758052117" "6ed61522770067a63d7cfe797bede622fa69c975dd0882c7cb706e2ddb464a32" "b9183de9666c3a16a7ffa7faaa8e9941b8d0ab50f9aaba1ca49f2f3aec7e3be9" "caa9a86ff9b85f733b424f520ec6ecff3499a36f20eb8d40e3096dbbe1884069" default)))
  '(elpy-mode-hook nil)
  '(elpy-modules (quote (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
+ '(elpy-rpc-backend "jedi")
  '(ido-separator nil)
  '(python-check-command "flake8")
- '(show-paren-mode t)
- '(tool-bar-mode nil))
+ '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
