@@ -19,31 +19,6 @@ XTerm*background: black
 XTerm*foreground: gray90
 XTerm*cursorColor: gray90
 
-! rxvt-unicode
-! ----------------------------------------------------------------------------
-URxvt*font: -misc-fixed-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
-URxvt*termName: rxvt-256color
-
-URxvt*foreground: #f2f2f2
-URxvt*background: #101010
-
-urxvt.scrollBar: False
-urxvt.internalBorder: 6
-urxvt.visualBell: True
-urxvt.cursorUnderline: False
-urxvt.cursorBlink: False
-!urxvt.cursorColor: White
-urxvt.saveLines: 8192
-urxvt.transparent: True
-urxvt.shading: 14
-urxvt.perl-ext-common: default,tabbed,matcher
-! ,-selection-popup,-option-popup
-urxvt.urlLauncher: w3m
-urxvt.tabbed.tab-bg: 0
-urxvt.tabbed.tab-fg: 3
-urxvt.tabbed.tabbar-bg: 0
-urxvt.tabbed.tabbar-fg: 2
-
 ! xman
 ! ----------------------------------------------------------------------------
 Xman*manualFontBold:	-misc-fixed-bold-r-normal-*-*-120-*-*-*-*-iso10646-1
