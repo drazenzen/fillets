@@ -13,7 +13,6 @@ Plugin 'tmhedberg/SimpylFold'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'mhinz/vim-signify'
 Plugin 'majutsushi/tagbar'
-Plugin 'Lawrencium'
 Plugin 'othree/html5.vim'
 Plugin 'rking/ag.vim'
 Plugin 'nvie/vim-flake8'
@@ -21,8 +20,9 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ervandew/supertab'
-Plugin 'junkblocker/patchreview-vim'
 Plugin 'vim-scripts/bufexplorer.zip'
+Plugin 'junkblocker/patchreview-vim'
+
 Plugin 'itchyny/lightline.vim'
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'Zenburn'
@@ -31,12 +31,9 @@ Plugin 'desert256.vim'
 call vundle#end()
 
 " Enable syntax and colors
-syntax enable
 set t_Co=256
-" Dark background
-set background=dark
-" Colorscheme
-colorscheme desert256
+syntax enable
+colorscheme jellybeans
 " Highlight searches
 set hls
 " Incremental search
@@ -68,8 +65,9 @@ set listchars=tab:»\ ,trail:·,extends:>,precedes:<,eol:¬ " ¶ ⯈
 set statusline=%t%m\ %r%w\ %Y\ %{&ff}\ %{&fenc}%=hex=\%02.2B\ %l:%v\ %p%%
 " Always show statusline
 set laststatus=2
-" Show linenumbers
-set nu
+" Show linenumbers and relativenumbers
+set nonu
+set relativenumber
 " Set swap directory
 set directory=~/.vim/tmp
 " Set backup directory
@@ -96,7 +94,7 @@ if has("gui_running")
 		set guifont=Fixedsys:h9
 	endif
 	if has("unix")
-		set guifont=Liberation\ Mono\ 8,Monospace\ 9
+		set guifont=Liberation\ Mono\ 9,Monospace\ 9
 	endif
 	set linespace=0
 	" hide toolbar and menubar
@@ -109,7 +107,6 @@ if has("gui_running")
 	set guioptions-=L
 	" no mouse blink
 	set guicursor=a:blinkon0
-	colorscheme navajo
 endif
 
 " Functions:
@@ -162,23 +159,41 @@ function! Preserve(command)
   call cursor(l, c)
 endfunction
 
+" Open new tab with output of hg diff command
+" ===========================================
+function! HgDiff()
+	tabnew
+	setlocal buftype=nofile ft=diff bufhidden=hide noswapfile
+	read ! hg diff
+	0delete
+endfunction
+
+" Vim:
+" ====
+nnoremap <leader>v :edit $MYVIMRC<CR>
+nnoremap <leader>s :source $MYVIMRC<CR>
+
 " Python:
 " =======
 autocmd BufRead,BufNewFile *.py set tabstop=8 softtabstop=4 shiftwidth=4 expandtab
 autocmd BufRead,BufNewFile *.py set makeprg=flake8\ %
 autocmd BufRead,BufNewFile *.py set textwidth=120
 autocmd BufRead,BufNewFile *.py set ai smarttab smartindent
-autocmd FileType python map <buffer> <F9> :call Flake8()<CR>
+autocmd FileType python noremap <buffer> <F9> :call Flake8()<CR>
 let python_highlight_all=1
 " Virtualeenv support
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
+" py << EOF
+" import os
+" import sys
+" if 'VIRTUAL_ENV' in os.environ:
+"     project_base_dir = os.environ['VIRTUAL_ENV']
+"     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"     execfile(activate_this, dict(__file__=activate_this))
+" EOF
+let g:jedi#show_call_signatures = "2"
+" neovim setup
+let g:python_host_prog = '/home/drazen/.virtualenvs/neovim2/bin/python'
+let g:python3_host_prog = '/home/drazen/.virtualenvs/neovim3/bin/python'
 
 " ReST:
 " =====
@@ -187,16 +202,17 @@ autocmd FileType rst set makeprg=rst2html\ %
 
 " HTML:
 " =====
-autocmd BufRead *.htm set ts=2|set sw=2|set et|set sts=2
-autocmd BufRead *.html set ts=2|set sw=2|set et|set sts=2
+autocmd BufRead,BufNewFile *.htm set ts=2|set sw=2|set et|set sts=2
+autocmd BufRead,BufNewFile *.html set ts=2|set sw=2|set et|set sts=2
 
 " CSS:
 " ====
-autocmd BufRead *.css set ts=4|set sw=4|set et|set sts=4
+autocmd BufRead,BufNewFile *.css set ts=4|set sw=4|set et|set sts=4
 
 " JS:
 " ===
-autocmd BufNewFile,BufRead *.js set tabstop=2 softtabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.js set tabstop=4 softtabstop=4 shiftwidth=4
+autocmd FileType javascript set makeprg=jshint\ %
 
 " PHP:
 " ====
@@ -209,8 +225,8 @@ autocmd BufRead *.php let php_sql_query=1|let php_folding=1
 au BufReadPre *.nfo call SetFileEncodings('cp437')
 au BufReadPost *.nfo call RestoreFileEncodings()
 
-" Abbreviation:
-" =============
+" Abbreviations:
+" ==============
 
 " Completition:
 " =============
@@ -243,7 +259,7 @@ set noshowmode
 
 " Tagbar:
 " =======
-nmap <F3> :TagbarToggle<CR>
+nnoremap <F3> :TagbarToggle<CR>
 
 " Ag:
 " ===
@@ -264,66 +280,25 @@ highlight link Flake8_PyFlake WarningMsg
 " Mappings:
 " =========
 nnoremap <F12> :Ex<CR>
-nmap <F2> :NERDTreeToggle<CR>
+nnoremap <F2> :NERDTreeToggle<CR>
 
 nnoremap <space> za
 
 nnoremap <C-Tab> :bn<CR>
 nnoremap <C-S-Tab> :bp<CR>
-nnoremap <silent> <A-Up> :wincmd k<CR>
-nnoremap <silent> <A-Left> :wincmd h<CR>
-nnoremap <silent> <A-Down> :wincmd j<CR>
-nnoremap <silent> <A-Right> :wincmd l<CR>
-nmap <leader>l :set list!<CR>
-nmap <leader>$ :call Preserve("%s/\\s\\+$//e")<CR>
-nmap <leader>= :call Preserve("normal gg=G")<CR>
-nmap j gj
-nmap k gk
+nnoremap <leader>l :set list!<CR>
+nnoremap <leader>$ :call Preserve("%s/\\s\\+$//e")<CR>
+nnoremap <leader>= :call Preserve("normal gg=G")<CR>
+nnoremap <leader>d :call HgDiff()<CR>
+nnoremap j gj
+nnoremap k gk
 
-" Reference:
-" ==========
-" Use all 256 colors if term support it
-" -------------------------------------
-" :set t_Co=256
-" Or set alias in .bashrc
-"
-" Change colors :help highlight
-"
-" highlight Cursor guifg=NONE guibg=#656565 gui=NONE
-"
-" Long lines and wrapping tuned on, j and k move down/up to next visible line
-" ---------------------------------------------------------------------------
-"
-" Make file directory current working directoy
-" --------------------------------------------
-" :cd %:p:h
-"
-" Change to directory of current file automatically, but not on other windows
-" ---------------------------------------------------------------------------
-" autocmd BufEnter * lcd %:p:h
-"
-" Minimal number of lines to keep below the cursor
-" ------------------------------------------------
-" set scrolloff=10
-"
-" Copy and move commands
-" ----------------------
-" :reg (sinonim) :dis
-" :pu :put [registar]
-"
-" Sorting a section
-" -----------------
-" either use marks or even better
-" enter visual mode and select text to be sorted
-" issue !sort command
-"
-" Remove blank lines from file
-" ----------------------------
-" :g/^$/d
-" May need to get rid of trailing whitespace first
-" :%s/[ ^I]*$/
-" Also look at
-" :%!cat -s
-" Another solution
-" :%s/^[\ \t]*\n//g
-"
+" Move line down
+nnoremap <leader>- ddp
+" Move line up
+nnoremap <leader>_ ddkP
+" Current word to uppercase
+nnoremap <leader><c-u> viwUe<esc>
+" Put word in quotes
+nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel

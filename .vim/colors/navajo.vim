@@ -5,6 +5,9 @@
 "
 " This color scheme uses a "navajo-white" background
 "
+" Modified By: Dražen Pavetić <drazen@k2net.hr>
+" Last Modification: 2016-05-13 10:41:35
+"
 
 set background=light
 hi clear
@@ -26,7 +29,8 @@ hi NonText term=bold ctermfg=DarkBlue cterm=bold gui=bold guifg=#808080
 hi Directory term=bold ctermfg=DarkBlue guifg=Blue
 hi ErrorMsg term=standout ctermfg=Gray ctermbg=DarkRed cterm=bold gui=bold guifg=White guibg=Red
 hi IncSearch term=reverse cterm=reverse gui=reverse
-hi Search term=reverse ctermbg=Black ctermfg=White cterm=reverse guibg=White
+" original hi Search term=reverse ctermbg=Black ctermfg=White cterm=reverse guibg=White
+hi Search term=reverse ctermbg=Black ctermfg=White cterm=reverse guibg=#EEE1BE
 hi MoreMsg term=bold ctermfg=DarkGreen gui=bold guifg=SeaGreen
 hi ModeMsg term=bold cterm=bold gui=bold
 hi LineNr term=underline ctermfg=DarkCyan ctermbg=Gray guibg=#808080 gui=bold guifg=black
@@ -41,9 +45,11 @@ hi WarningMsg term=standout ctermfg=DarkRed gui=bold guifg=Red
 hi WildMenu term=standout ctermfg=Black ctermbg=DarkYellow guifg=Black guibg=Yellow
 hi Folded term=standout ctermfg=DarkBlue ctermbg=Gray guifg=Black guibg=NONE guifg=#907050
 hi FoldColumn term=standout ctermfg=DarkBlue ctermbg=Gray guifg=DarkBlue guibg=#c0c0c0
-hi DiffAdd term=bold ctermbg=DarkBlue guibg=White
+" original hi DiffAdd term=bold ctermbg=DarkBlue guibg=White
+hi DiffAdd term=bold ctermbg=DarkBlue guibg=#EEE1BE
 hi DiffChange term=bold ctermbg=DarkMagenta guibg=#edb5cd
-hi DiffDelete term=bold ctermfg=DarkBlue ctermbg=6 cterm=bold gui=bold guifg=LightBlue guibg=#f6e8d0
+" original hi DiffDelete term=bold ctermfg=DarkBlue ctermbg=6 cterm=bold gui=bold guifg=LightBlue guibg=#f6e8d0
+hi DiffDelete term=bold ctermfg=DarkBlue ctermbg=6 cterm=bold gui=bold guifg=#31708F guibg=#f6e8d0
 hi DiffText term=reverse ctermbg=DarkRed cterm=bold gui=bold guibg=#ff8060
 hi Cursor gui=reverse guifg=#404010 guibg=white
 hi lCursor guifg=bg guibg=fg
