@@ -8,7 +8,6 @@ call vundle#begin()
 " let Vundle manage Vundle
 Plugin 'gmarik/vundle'
 
-Plugin 'scrooloose/nerdtree'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'mhinz/vim-signify'
@@ -21,7 +20,6 @@ Plugin 'davidhalter/jedi-vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ervandew/supertab'
 Plugin 'vim-scripts/bufexplorer.zip'
-Plugin 'junkblocker/patchreview-vim'
 
 Plugin 'itchyny/lightline.vim'
 Plugin 'nanotech/jellybeans.vim'
@@ -172,15 +170,20 @@ endfunction
 " ====
 nnoremap <leader>v :edit $MYVIMRC<CR>
 nnoremap <leader>s :source $MYVIMRC<CR>
+let g:netrw_list_hide='^\.,\~$'
 
 " Python:
 " =======
-autocmd BufRead,BufNewFile *.py set tabstop=8 softtabstop=4 shiftwidth=4 expandtab
-autocmd BufRead,BufNewFile *.py set makeprg=flake8\ %
-autocmd BufRead,BufNewFile *.py set textwidth=120
-autocmd BufRead,BufNewFile *.py set ai smarttab smartindent
-autocmd FileType python noremap <buffer> <F9> :call Flake8()<CR>
+augroup ft_py
+	autocmd!
+	autocmd BufRead,BufNewFile *.py set tabstop=8 softtabstop=4 shiftwidth=4 expandtab
+	autocmd BufRead,BufNewFile *.py set makeprg=flake8\ %
+	autocmd BufRead,BufNewFile *.py set textwidth=120
+	autocmd BufRead,BufNewFile *.py set ai smarttab smartindent
+	autocmd FileType python noremap <buffer> <F9> :call Flake8()<CR>
+augroup END
 let python_highlight_all=1
+let g:SimpylFold_fold_docstring = 0
 " Virtualeenv support
 " py << EOF
 " import os
@@ -194,33 +197,51 @@ let g:jedi#show_call_signatures = "2"
 
 " ReST:
 " =====
-autocmd FileType rst set tabstop=8 sts=4 sw=4 expandtab
-autocmd FileType rst set makeprg=rst2html\ %
+augroup ft_rst
+	autocmd!
+	autocmd FileType rst set tabstop=8 sts=4 sw=4 expandtab
+	autocmd FileType rst set makeprg=rst2html\ %
+augroup END
 
 " HTML:
 " =====
-autocmd BufRead,BufNewFile *.htm set ts=2|set sw=2|set et|set sts=2
-autocmd BufRead,BufNewFile *.html set ts=2|set sw=2|set et|set sts=2
+augroup ft_html
+	autocmd!
+	autocmd BufRead,BufNewFile *.htm set ts=2|set sw=2|set et|set sts=2
+	autocmd BufRead,BufNewFile *.html set ts=2|set sw=2|set et|set sts=2
+augroup END
 
 " CSS:
 " ====
-autocmd BufRead,BufNewFile *.css set ts=4|set sw=4|set et|set sts=4
+augroup ft_css
+	autocmd!
+	autocmd BufRead,BufNewFile *.css set ts=4|set sw=4|set et|set sts=4
+augroup END
 
 " JS:
 " ===
-autocmd BufNewFile,BufRead *.js set tabstop=4 softtabstop=4 shiftwidth=4
-autocmd FileType javascript set makeprg=jshint\ %
+augroup ft_js
+	autocmd!
+	autocmd BufNewFile,BufRead *.js set tabstop=4 softtabstop=4 shiftwidth=4
+	autocmd FileType javascript set makeprg=jshint\ %
+augroup END
 
 " PHP:
 " ====
-autocmd BufRead *.php set ts=4|set sw=4|set et|set sts=4
-autocmd BufRead *.php set makeprg=php\ -l\ %
-autocmd BufRead *.php let php_sql_query=1|let php_folding=1
+augroup ft_php
+	autocmd!
+	autocmd BufRead *.php set ts=4|set sw=4|set et|set sts=4
+	autocmd BufRead *.php set makeprg=php\ -l\ %
+	autocmd BufRead *.php let php_sql_query=1|let php_folding=1
+augroup END
 
 " NFO:
 " ====
-au BufReadPre *.nfo call SetFileEncodings('cp437')
-au BufReadPost *.nfo call RestoreFileEncodings()
+augroup ft_nfo
+	autocmd!
+	au BufReadPre *.nfo call SetFileEncodings('cp437')
+	au BufReadPost *.nfo call RestoreFileEncodings()
+augroup END
 
 " Abbreviations:
 " ==============
@@ -228,15 +249,6 @@ au BufReadPost *.nfo call RestoreFileEncodings()
 " Completition:
 " =============
 set completeopt=longest,menuone
-
-" NERDTree:
-" =========
-let NERDTreeIgnore=['\.pyc$', '\~$']
-
-" SimpylFold:
-" ===========
-let g:SimpylFold_fold_docstring = 0
-let g:SimpylFold_docstring_preview = 1
 
 " Ctrlp:
 " ======
@@ -258,10 +270,6 @@ set noshowmode
 " =======
 nnoremap <F3> :TagbarToggle<CR>
 
-" Ag:
-" ===
-let g:ag_working_path_mode='r'
-
 " Flake8:
 " =======
 let g:flake8_show_quickfix=1
@@ -276,11 +284,9 @@ highlight link Flake8_PyFlake WarningMsg
 
 " Mappings:
 " =========
-nnoremap <F12> :Ex<CR>
-nnoremap <F2> :NERDTreeToggle<CR>
-
+nnoremap <F2> :Ex<CR>
+noremap <leader>q :bp<CR>
 nnoremap <space> za
-
 nnoremap <C-Tab> :bn<CR>
 nnoremap <C-S-Tab> :bp<CR>
 nnoremap <leader>l :set list!<CR>
@@ -289,13 +295,15 @@ nnoremap <leader>= :call Preserve("normal gg=G")<CR>
 nnoremap <leader>hd :call HgDiff()<CR>
 nnoremap j gj
 nnoremap k gk
-
-" Move line down
-nnoremap <leader>- ddp
-" Move line up
-nnoremap <leader>_ ddkP
 " Current word to uppercase
 nnoremap <leader><c-u> viwUe<esc>
 " Put word in quotes
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
+" Operator pending
+onoremap in( :<c-u>normal! f(vi(<cr>
+onoremap in" :<c-u>normal! f"vi"<cr>
+onoremap in' :<c-u>normal! f'vi'<cr>
+onoremap in[ :<c-u>normal! f[vi[<cr>
+
+
