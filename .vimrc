@@ -148,15 +148,15 @@ endfunction
 " Preserve last search and cursor position
 " ========================================
 function! Preserve(command)
-  " Preparation: save last search, and cursor position.
-  let _s = @/
-  let l = line(".")
-  let c = col(".")
-  " Do the business:
-  execute a:command
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
+	" Preparation: save last search, and cursor position.
+	let _s = @/
+	let l = line(".")
+	let c = col(".")
+	" Do the business:
+	execute a:command
+	" Clean up: restore previous search history, and cursor position
+	let @/=_s
+	call cursor(l, c)
 endfunction
 
 " Open new tab with output of hg diff command
@@ -191,9 +191,6 @@ let python_highlight_all=1
 "     execfile(activate_this, dict(__file__=activate_this))
 " EOF
 let g:jedi#show_call_signatures = "2"
-" neovim setup
-let g:python_host_prog = '/home/drazen/.virtualenvs/neovim2/bin/python'
-let g:python3_host_prog = '/home/drazen/.virtualenvs/neovim3/bin/python'
 
 " ReST:
 " =====
@@ -289,7 +286,7 @@ nnoremap <C-S-Tab> :bp<CR>
 nnoremap <leader>l :set list!<CR>
 nnoremap <leader>$ :call Preserve("%s/\\s\\+$//e")<CR>
 nnoremap <leader>= :call Preserve("normal gg=G")<CR>
-nnoremap <leader>d :call HgDiff()<CR>
+nnoremap <leader>hd :call HgDiff()<CR>
 nnoremap j gj
 nnoremap k gk
 
