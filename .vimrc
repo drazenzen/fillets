@@ -1,6 +1,9 @@
 set nocompatible
 filetype off
 
+" Install Vundle
+" $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 
+
 " Set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
@@ -13,18 +16,14 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'mhinz/vim-signify'
 Plugin 'majutsushi/tagbar'
 Plugin 'othree/html5.vim'
-Plugin 'rking/ag.vim'
 Plugin 'nvie/vim-flake8'
 Plugin 'junegunn/goyo.vim'
-Plugin 'davidhalter/jedi-vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ervandew/supertab'
 Plugin 'vim-scripts/bufexplorer.zip'
 
 Plugin 'itchyny/lightline.vim'
 Plugin 'nanotech/jellybeans.vim'
-Plugin 'Zenburn'
-Plugin 'desert256.vim'
 
 call vundle#end()
 
@@ -193,7 +192,6 @@ let g:SimpylFold_fold_docstring = 0
 "     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
 "     execfile(activate_this, dict(__file__=activate_this))
 " EOF
-let g:jedi#show_call_signatures = "2"
 
 " ReST:
 " =====

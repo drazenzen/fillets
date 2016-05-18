@@ -121,7 +121,11 @@ __jobcount() {
     fi
 }
 
-export PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]\u\$(__hg_ps1)\$(__jobcount):\w$ "
+if [ "$TERM" != "dumb" ]; then
+	export PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]\u\$(__hg_ps1)\$(__jobcount):\w$ "
+else
+	export PS1="\u@\h: \w$ "
+fi
 export EDITOR=vim
 
 # Alias definitions.
