@@ -170,6 +170,7 @@ endfunction
 nnoremap <leader>v :edit $MYVIMRC<CR>
 nnoremap <leader>s :source $MYVIMRC<CR>
 let g:netrw_list_hide='^\.,\~$'
+let g:netrw_liststyle= 3
 
 " Python:
 " =======
@@ -179,6 +180,7 @@ augroup ft_py
 	autocmd BufRead,BufNewFile *.py set makeprg=flake8\ %
 	autocmd BufRead,BufNewFile *.py set textwidth=120
 	autocmd BufRead,BufNewFile *.py set ai smarttab smartindent
+	autocmd BufRead,BufNewFile *.py set foldlevel=99
 	autocmd FileType python noremap <buffer> <F9> :call Flake8()<CR>
 augroup END
 let python_highlight_all=1
