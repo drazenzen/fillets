@@ -18,6 +18,8 @@ XTerm*showBlinkAsBold: true
 XTerm*background: black
 XTerm*foreground: gray90
 XTerm*cursorColor: gray90
+XTerm*saveLines: 4096
+XTerm*VT100.TiteInhibit: true
 
 ! xman
 ! ----------------------------------------------------------------------------
