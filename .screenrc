@@ -14,7 +14,7 @@ vbell on
 vbell_msg "   Wuff  ----  Wuff!!  "
 
 # define a bigger scrollback, default is 100 lines
-defscrollback 1024
+defscrollback 2048
 
 # ------------------------------------------------------------------------------
 # SCREEN KEYBINDINGS
@@ -36,6 +36,10 @@ bindkey ^? stuff ^H
 # Ctrl left/right => prev/next window
 bindkey ^[[1;5D prev
 bindkey ^[[1;5C next
+# Ctrl + k to enter copy mode and move up one line
+bindkey "^k" eval "copy" "stuff k"
+# Meta + k to enter copy mode and move up one page
+bindkey "^[k" eval "copy" "stuff ^b"
 
 # ------------------------------------------------------------------------------
 # TERMINAL SETTINGS
@@ -50,6 +54,7 @@ hardstatus alwayslastline "%w"
 # Set the hardstatus prop on gui terms to set the titlebar/icon title
 termcapinfo xterm*|rxvt*|kterm*|Eterm* hs:ts=\E]0;:fs=\007:ds=\E]0;\007
 # use this for the hard status string
+# caption always "%{= bb}%{+b w}%n %t %h %=%l %H %c"
 hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][ %{y}Load: %l %{g}][%{B} %m-%d %{W} %c %{g}]'
 
 # set these terminals up to be 'optimal' instead of vt100
