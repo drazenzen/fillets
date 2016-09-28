@@ -32,7 +32,7 @@ bind I login on
 bind O login off
 bind } history
 # Fix the problem with backspace key in mutt
-bindkey ^? stuff ^H
+# bindkey ^? stuff ^H
 # Ctrl left/right => prev/next window
 bindkey ^[[1;5D prev
 bindkey ^[[1;5C next
