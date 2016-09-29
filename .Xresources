@@ -3,7 +3,8 @@
 Xft.antialias: true
 Xft.hinting: true
 Xft.hintstyle: hintfull
-Xft.rgba: rgb
+! Xft.lcdfilter: lcdlegacy
+! Xft.rgba: rgb
 
 *foreground: rgb:22/22/22
 *background: rgb:ee/ee/ec
@@ -20,6 +21,15 @@ XTerm*foreground: gray90
 XTerm*cursorColor: gray90
 XTerm*saveLines: 4096
 XTerm*VT100.TiteInhibit: true
+
+! emacs
+! ----------------------------------------------------------------------------
+! Emacs.font: 8x13
+Emacs.background: gray5
+Emacs.foreground: gray90
+Emacs.menuBar: off
+Emacs.verticalScrollBars: off
+Emacs.toolBar: off
 
 ! xman
 ! ----------------------------------------------------------------------------
