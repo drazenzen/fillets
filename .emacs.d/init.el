@@ -2,7 +2,7 @@
 ;; drazenzen .emacs file
 ;;
 ;; Creation-date: 2007-10-28
-;; Time-stamp: <2016-11-05 16:49:52 drazen>
+;; Time-stamp: <2016-12-05 15:31:30 drazen>
 ;;
 
 ;; packages
@@ -30,28 +30,24 @@ Return a list of installed packages or nil for every skipped package."
 (or (file-exists-p package-user-dir)
     (package-refresh-contents))
 (ensure-package-installed 'popwin 'company 'elpy 'web-mode 'ahg
-			  'visual-regexp 'expand-region 'ag
-			  'rainbow-delimiters
-			  'smart-mode-line)
-
-;; custom file
-(setq custom-file (concat user-emacs-directory "custom.el"))
-(load custom-file)
+			  'visual-regexp 'expand-region 'ag 'js2-mode
+			  'rainbow-delimiters 'smart-mode-line
+			  'smex 'slime 'slime-company 'po-mode)
 
 ;; library
 (setq load-path
-      (append (list "~/.emacs.d/lisp")
+      (append (list "~/.emacs.d/elisp")
 	      load-path))
 (load-file (concat
 	    user-emacs-directory
-	    (convert-standard-filename "lisp/") "functions.el"))
+	    (convert-standard-filename "elisp/") "functions.el"))
+(setq load-prefer-newer t)
 
 ;; common
 (blink-cursor-mode -1)
-(scroll-bar-mode)
-(tool-bar-mode 0)
-(menu-bar-mode 0)
-(scroll-bar-mode 0)
+(if (fboundp 'menu-bar-mode) (menu-bar-mode 0))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode 0))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode 0))
 (setq column-number-mode t)
 (show-paren-mode t)
 (setq visible-bell t)
@@ -69,6 +65,9 @@ Return a list of installed packages or nil for every skipped package."
 (setq inhibit-startup-screen t)
 (transient-mark-mode t)
 (delete-selection-mode t)
+;; only if emacs version >= 24.4
+(when (version<= "24.4" emacs-version)
+  (electric-pair-mode t))
 
 ;; enable commands
 (put 'narrow-to-region 'disabled nil)
@@ -113,6 +112,10 @@ Return a list of installed packages or nil for every skipped package."
 (setq-default save-place t)
 (setq save-place-file (concat user-emacs-directory "places"))
 
+;; hide-show
+(add-hook 'prog-mode-hook 'hs-minor-mode)
+(add-hook 'prog-mode-hook 'set-hs-keys)
+
 ;; company
 (add-hook 'after-init-hook 'global-company-mode)
 
@@ -120,8 +123,6 @@ Return a list of installed packages or nil for every skipped package."
 (elpy-enable)
 (defalias 'workon 'pyvenv-workon)
 (add-hook 'python-mode-hook 'set-newline-and-indent)
-(add-hook 'python-mode-hook 'hs-minor-mode)
-(add-hook 'python-mode-hook 'set-hs-keys)
 (add-hook 'python-mode-hook
           (lambda () (add-hook 'before-save-hook 'delete-trailing-whitespace)))
 
@@ -140,18 +141,23 @@ Return a list of installed packages or nil for every skipped package."
 (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
 (setq web-mode-engines-alist
       '(("django" . "\\.html\\'") ("django" . "\\.jinja\\'")))
-(setq web-mode-comment-style 2)
+(setq web-mode-comment-style 2)		; server comment style
 (add-hook 'web-mode-hook
           (lambda ()
             (set-fill-column 120)))     ; use 120 column rule for html files
 (add-hook 'web-mode-hook
           (lambda ()
             (setq web-mode-markup-indent-offset 2))) ; 2 spaces by default
-;; (setq web-mode-enable-current-element-highlight nil)
-;; (setq web-mode-enable-current-column-highlight t)
+(when (version<= "24.4" emacs-version)
+  (setq web-mode-enable-auto-pairing nil))		     ; using electric-pair-mode
 
-;; todo: javascript
-;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+;; js2-mode
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+;; slime
+(setq inferior-lisp-program "sbcl")
+(setq slime-contribs '(slime-fancy slime-company))
 
 ;; visual-regexp
 (require 'visual-regexp)
@@ -169,8 +175,23 @@ Return a list of installed packages or nil for every skipped package."
 ;; rainbow-delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
+;; smex
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+;; po
+(autoload 'po-mode "po-mode"
+  "Major mode for translators to edit PO files" t)
+(setq auto-mode-alist (cons '("\\.po\\'\\|\\.po\\." . po-mode)
+			    auto-mode-alist))
+
+;; (autoload 'po-find-file-coding-system "po-compat")
+;; (modify-coding-system-alist 'file "\\.po\\'\\|\\.po\\."
+;; 			    'po-find-file-coding-system)
+
 ;; indentation
-;; (setq-default indent-tabs-mode nil)             ; use spaces everywhere
+(setq-default indent-tabs-mode nil)             ; use spaces everywhere
 
 ;; saving buffers
 (add-hook 'before-save-hook 'time-stamp)
@@ -200,7 +221,6 @@ Return a list of installed packages or nil for every skipped package."
 (global-set-key (kbd "M-1") 'ag)
 (global-set-key (kbd "M-2") 'find-file-in-project)
 (global-set-key (kbd "M-3") 'rgrep)
-(global-set-key (kbd "<C-M-mouse-1>") 'hs-toggle-hiding)
 (global-set-key (kbd "C-1") 'delete-other-windows)
 (global-set-key (kbd "C--") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-S-k") 'delete-line)
@@ -232,8 +252,14 @@ Return a list of installed packages or nil for every skipped package."
 (require 'expand-region)
 (global-set-key (kbd "C-d") 'er/expand-region)
 
+;; custom file
+(setq custom-file (concat user-emacs-directory "custom.el"))
+(load custom-file)
+
 ;; theme
-(my-light-frame)
+(when (display-graphic-p)
+  ;; (my-light-frame)
+  (load-theme 'adwaita))
 ;; smart mode line
 (setq sml/theme 'dark)
 (sml/setup)
@@ -247,3 +273,32 @@ Return a list of installed packages or nil for every skipped package."
       ["Siječanj" "Veljača" "Ožujak" "Travanj"
        "Svibanj" "Lipanj" "Srpanj" "Kolovoz"
        "Rujan" "Listopad" "Studeni" "Prosinac"])
+
+;; printing
+;;
+;; Ref: https://www.emacswiki.org/emacs/PrintingBdfFonts
+;;
+;; convert the fonts
+;; $ OPTS="-r 600"
+;; $ otf2bdf $OPTS -w Bold -s O /usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono-BoldOblique.ttf >/somedir/djvmono-bo.bdf
+;; $ otf2bdf $OPTS -w Bold /usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono-Bold.ttf >/somedir/djvmono-b.bdf
+;; $ otf2bdf $OPTS -s O /usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono-Oblique.ttf >/somedir/djvmono-o.bdf
+;; $ otf2bdf $OPTS /usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono.ttf >/somedir/djvmono.bdf
+;;
+(eval-after-load 'ps-print
+  '(progn
+     (require 'ps-mule)
+     (setq ps-multibyte-buffer 'bdf-font) ;; print everything with bdf
+     (setq ps-font-size 9) ;; change according your tastes
+     (setq bdf-directory-list '("~/.fonts"))
+     (setq ps-mule-font-info-database-bdf
+	   '((unicode-bmp  ; everything in the world should be printed with this font
+	      (normal bdf "djvmono.bdf")
+	      (bold bdf "djvmono-b.bdf")
+	      (italic bdf "djvmono-o.bdf")
+	      (bold-italic bdf "djvmono-bo.bdf"))
+	     (iso-8859-1   ; please, latin-1 TOO, I said everything!
+	      (normal bdf "djvmono.bdf")
+	      (bold bdf "djvmono-b.bdf")
+	      (italic bdf "djvmono-o.bdf")
+	      (bold-italic bdf "djvmono-bo.bdf"))))))
