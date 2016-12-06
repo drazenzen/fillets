@@ -2,7 +2,7 @@
 ;; drazenzen .emacs file
 ;;
 ;; Creation-date: 2007-10-28
-;; Time-stamp: <2016-12-05 15:31:30 drazen>
+;; Time-stamp: <2016-12-06 10:44:19 drazen>
 ;;
 
 ;; packages
@@ -254,7 +254,8 @@ Return a list of installed packages or nil for every skipped package."
 
 ;; custom file
 (setq custom-file (concat user-emacs-directory "custom.el"))
-(load custom-file)
+(if (file-exists-p custom-file)
+    (load custom-file))
 
 ;; theme
 (when (display-graphic-p)
