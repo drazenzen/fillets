@@ -2,7 +2,7 @@
 ;; drazenzen .emacs file
 ;;
 ;; Creation-date: 2007-10-28
-;; Time-stamp: <2016-12-06 10:44:19 drazen>
+;; Time-stamp: <2016-12-09 12:46:42 drazen>
 ;;
 
 ;; packages
@@ -44,7 +44,7 @@ Return a list of installed packages or nil for every skipped package."
 (setq load-prefer-newer t)
 
 ;; common
-(blink-cursor-mode -1)
+(blink-cursor-mode 0)
 (if (fboundp 'menu-bar-mode) (menu-bar-mode 0))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode 0))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode 0))
@@ -138,9 +138,11 @@ Return a list of installed packages or nil for every skipped package."
 ;; web
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mako?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
 (setq web-mode-engines-alist
-      '(("django" . "\\.html\\'") ("django" . "\\.jinja\\'")))
+      '(("django" . "\\.html\\'") ("django" . "\\.jinja\\'")
+        ("mako" . "\\.mako\\'")))
 (setq web-mode-comment-style 2)		; server comment style
 (add-hook 'web-mode-hook
           (lambda ()
