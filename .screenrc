@@ -37,9 +37,9 @@ bind } history
 bindkey ^[[1;5D prev
 bindkey ^[[1;5C next
 # Ctrl + k to enter copy mode and move up one line
-bindkey "^k" eval "copy" "stuff k"
+# bindkey "^k" eval "copy" "stuff k"
 # Meta + k to enter copy mode and move up one page
-bindkey "^[k" eval "copy" "stuff ^b"
+# bindkey "^[k" eval "copy" "stuff ^b"
 
 # ------------------------------------------------------------------------------
 # TERMINAL SETTINGS
@@ -89,4 +89,4 @@ defnonblock 5
 # ------------------------------------------------------------------------------
 
 screen bash
-screen bash
+screen emacs -nw
