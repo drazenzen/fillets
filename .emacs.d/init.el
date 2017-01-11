@@ -2,7 +2,7 @@
 ;; drazenzen .emacs file
 ;;
 ;; Creation-date: 2007-10-28
-;; Time-stamp: <2016-12-09 12:46:42 drazen>
+;; Time-stamp: <2017-01-11 15:39:35 drazen>
 ;;
 
 ;; packages
@@ -44,7 +44,6 @@ Return a list of installed packages or nil for every skipped package."
 (setq load-prefer-newer t)
 
 ;; common
-(blink-cursor-mode 0)
 (if (fboundp 'menu-bar-mode) (menu-bar-mode 0))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode 0))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode 0))
@@ -82,11 +81,6 @@ Return a list of installed packages or nil for every skipped package."
       kept-new-versions 4
       version-control t)
 
-;; clipboard
-(setq x-select-enable-clipboard t
-      x-select-enable-primary t
-      save-interprogram-paste-before-kill t)
-
 ;; tramp
 ;; http://www.emacswiki.org/emacs/TrampMode
 (setq tramp-default-method "ssh")
@@ -95,10 +89,6 @@ Return a list of installed packages or nil for every skipped package."
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
-
-;; term
-(unless window-system
-  (xterm-mouse-mode t))
 
 ;; dired
 (add-hook 'dired-mode-hook
@@ -144,6 +134,7 @@ Return a list of installed packages or nil for every skipped package."
       '(("django" . "\\.html\\'") ("django" . "\\.jinja\\'")
         ("mako" . "\\.mako\\'")))
 (setq web-mode-comment-style 2)		; server comment style
+(setq web-mode-enable-current-element-highlight t)
 (add-hook 'web-mode-hook
           (lambda ()
             (set-fill-column 120)))     ; use 120 column rule for html files
@@ -262,7 +253,9 @@ Return a list of installed packages or nil for every skipped package."
 ;; theme
 (when (display-graphic-p)
   ;; (my-light-frame)
-  (load-theme 'adwaita))
+  (blink-cursor-mode 0)
+  (setq-default cursor-type 'bar)
+  (load-theme 'plan9))
 ;; smart mode line
 (setq sml/theme 'dark)
 (sml/setup)
