@@ -2,35 +2,28 @@ set nocompatible
 filetype off
 
 " Install Vundle
-" $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 
+" $ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 " Set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle
-Plugin 'gmarik/vundle'
+Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'tmhedberg/SimpylFold'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'mhinz/vim-signify'
 Plugin 'majutsushi/tagbar'
 Plugin 'othree/html5.vim'
 Plugin 'nvie/vim-flake8'
-Plugin 'junegunn/goyo.vim'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'ervandew/supertab'
 Plugin 'vim-scripts/bufexplorer.zip'
-
-Plugin 'itchyny/lightline.vim'
-Plugin 'nanotech/jellybeans.vim'
 
 call vundle#end()
 
 " Enable syntax and colors
 set t_Co=256
 syntax enable
-colorscheme jellybeans
 " Highlight searches
 set hls
 " Incremental search
@@ -57,7 +50,7 @@ set shortmess=aI
 " Set no visual bell, no beeping
 set novisualbell
 " Strings to use in list mode
-set listchars=tab:»\ ,trail:·,extends:>,precedes:<,eol:¬ " ¶ ⯈
+set listchars=tab:»\ ,trail:·,extends:>,precedes:<,eol:¬ " ¶ 
 " Statusline
 set statusline=%t%m\ %r%w\ %Y\ %{&ff}\ %{&fenc}%=hex=\%02.2B\ %l:%v\ %p%%
 " Always show statusline
@@ -91,7 +84,7 @@ if has("gui_running")
 		set guifont=Fixedsys:h9
 	endif
 	if has("unix")
-		set guifont=Liberation\ Mono\ 9,Monospace\ 9
+		set guifont=Liberation\ Mono\ 8,Monospace\ 8
 	endif
 	set linespace=0
 	" hide toolbar and menubar
@@ -184,16 +177,6 @@ augroup ft_py
 	autocmd FileType python noremap <buffer> <F9> :call Flake8()<CR>
 augroup END
 let python_highlight_all=1
-let g:SimpylFold_fold_docstring = 0
-" Virtualeenv support
-" py << EOF
-" import os
-" import sys
-" if 'VIRTUAL_ENV' in os.environ:
-"     project_base_dir = os.environ['VIRTUAL_ENV']
-"     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-"     execfile(activate_this, dict(__file__=activate_this))
-" EOF
 
 " ReST:
 " =====
@@ -255,16 +238,6 @@ set completeopt=longest,menuone
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
-
-" Lightline:
-" ==========
-let g:lightline = {
-	\ 'colorscheme': 'jellybeans',
-	\ 'component': {
-	\	'readonly': '%{&readonly?"x":""}',
-	\	},
-	\ }
-set noshowmode
 
 " Tagbar:
 " =======
