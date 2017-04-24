@@ -18,18 +18,31 @@ Plugin 'othree/html5.vim'
 Plugin 'nvie/vim-flake8'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'vim-scripts/bufexplorer.zip'
+Plugin 'mileszs/ack.vim'"
+Plugin 'lrvick/Conque-Shell'
+Plugin 'ervandew/supertab'
+Plugin 'pytest.vim'
+" Syntaxes
+Plugin 'mako.vim'
+" Colorschemes
+Plugin 'xero/sourcerer.vim'
+Plugin 'jellybeans.vim'
+Plugin 'molokai'
 
 call vundle#end()
 
 " Enable syntax and colors
 set t_Co=256
 syntax enable
+colorscheme jellybeans
 " Highlight searches
 set hls
 " Incremental search
 set incsearch
 " Ignore case
 set ignorecase
+" Smart case
+set smartcase
 " Make mouse active
 set mouse=a
 " Show ruler
@@ -50,13 +63,22 @@ set shortmess=aI
 " Set no visual bell, no beeping
 set novisualbell
 " Strings to use in list mode
-set listchars=tab:»\ ,trail:·,extends:>,precedes:<,eol:¬ " ¶ 
+set listchars=tab:▸\ ,trail:·,extends:>,precedes:<,eol:¬ " ¶ 
 " Statusline
-set statusline=%t%m\ %r%w\ %Y\ %{&ff}\ %{&fenc}%=hex=\%02.2B\ %l:%v\ %p%%
+" set statusline=%t%m\ %r%w\ %Y\ %{&ff}\ %{&fenc}%=hex=\%02.2B\ %l:%v\ %p%%
+set statusline=
+set statusline+=%-3.3n\                      " buffer number
+set statusline+=%f\                          " filename
+set statusline+=%h%m%r%w                     " status flags
+set statusline+=\[%{strlen(&ft)?&ft:'none'}] " file type
+set statusline+=%=                           " right align remainder
+set statusline+=0x%-8B                       " character value
+set statusline+=%-14(%l,%c%V%)               " line, character
+set statusline+=%<%P                         " file position"
 " Always show statusline
 set laststatus=2
 " Show linenumbers and relativenumbers
-set nonu
+set nu
 set relativenumber
 " Set swap directory
 set directory=~/.vim/tmp
@@ -70,6 +92,9 @@ set wildmenu
 set wildmode=full
 " Cmd history
 set history=200
+" Folding
+set foldmethod=indent
+set foldlevel=99
 
 " Filetypes:
 " ==========
@@ -84,12 +109,12 @@ if has("gui_running")
 		set guifont=Fixedsys:h9
 	endif
 	if has("unix")
-		set guifont=Liberation\ Mono\ 8,Monospace\ 8
+		set guifont=Monospace\ 8,Liberation\ Mono\ 8
 	endif
-	set linespace=0
+	set linespace=1
 	" hide toolbar and menubar
 	set guioptions-=T
-	set guioptions-=m
+	" set guioptions-=m
 	" hide scrollbars
 	set guioptions-=r
 	set guioptions-=R
@@ -164,6 +189,13 @@ nnoremap <leader>v :edit $MYVIMRC<CR>
 nnoremap <leader>s :source $MYVIMRC<CR>
 let g:netrw_list_hide='^\.,\~$'
 let g:netrw_liststyle= 3
+if has("autocmd")
+	au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+" Whitespace:
+" ===========
+" au BufRead,BufNewFile *.py,*.c,*.h,*.html,*.js match BadWhitespace /\s\+$/
 
 " Python:
 " =======
@@ -174,7 +206,7 @@ augroup ft_py
 	autocmd BufRead,BufNewFile *.py set textwidth=120
 	autocmd BufRead,BufNewFile *.py set ai smarttab smartindent
 	autocmd BufRead,BufNewFile *.py set foldlevel=99
-	autocmd FileType python noremap <buffer> <F9> :call Flake8()<CR>
+	autocmd FileType python noremap <buffer> <F8> :call Flake8()<CR>
 augroup END
 let python_highlight_all=1
 
@@ -207,6 +239,14 @@ augroup ft_js
 	autocmd!
 	autocmd BufNewFile,BufRead *.js set tabstop=4 softtabstop=4 shiftwidth=4
 	autocmd FileType javascript set makeprg=jshint\ %
+augroup END
+
+" Ruby:
+" =====
+augroup ft_rb
+	autocmd!
+	autocmd BufNewFile,BufRead *.rb set ts=2|set sw=2|set et|set sts=2
+	autocmd BufRead,BufNewFile *.py set foldlevel=99
 augroup END
 
 " PHP:
@@ -255,14 +295,28 @@ highlight link Flake8_Complexity WarningMsg
 highlight link Flake8_Naming WarningMsg
 highlight link Flake8_PyFlake WarningMsg
 
+" Ack
+" ===
+" Use Ag instead of ack
+let g:ackprg = 'ag --vimgrep --smart-case'
+cnoreabbrev ag Ack
+cnoreabbrev aG Ack
+cnoreabbrev Ag Ack
+cnoreabbrev AG Ack
+
 " Mappings:
 " =========
 nnoremap <F2> :Ex<CR>
 noremap <leader>q :bp<CR>
+" Toggle fold
 nnoremap <space> za
+" Does not work in console
 nnoremap <C-Tab> :bn<CR>
 nnoremap <C-S-Tab> :bp<CR>
+" Toggle invisibles
 nnoremap <leader>l :set list!<CR>
+" BufExplorer plugin
+nnoremap <leader>l :BufExplorer<CR>
 nnoremap <leader>$ :call Preserve("%s/\\s\\+$//e")<CR>
 nnoremap <leader>= :call Preserve("normal gg=G")<CR>
 nnoremap <leader>hd :call HgDiff()<CR>
@@ -279,4 +333,14 @@ onoremap in" :<c-u>normal! f"vi"<cr>
 onoremap in' :<c-u>normal! f'vi'<cr>
 onoremap in[ :<c-u>normal! f[vi[<cr>
 
+" Jump to subject
+noremap đ <C-]>
+" Search
+noremap - /
+" Paragraph backward/forward
+noremap Š {
+noremap Đ }
 
+" startup message
+" echo ".-^-."
+" :silent !echo Hi
