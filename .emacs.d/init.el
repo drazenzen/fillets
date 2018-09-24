@@ -29,10 +29,10 @@ Return a list of installed packages or nil for every skipped package."
 
 (or (file-exists-p package-user-dir)
     (package-refresh-contents))
-(ensure-package-installed 'popwin 'company 'elpy 'web-mode 'ahg
+(ensure-package-installed 'popwin 'company 'elpy 'web-mode
 			  'visual-regexp 'expand-region 'ag 'js2-mode
 			  'rainbow-delimiters 'smart-mode-line
-			  'smex 'slime 'slime-company 'po-mode)
+			  'po-mode)
 
 ;; library
 (setq load-path
@@ -121,10 +121,6 @@ Return a list of installed packages or nil for every skipped package."
           (lambda ()
             (toggle-truncate-lines t)))
 
-;; mercurial
-(require 'ahg)
-(global-set-key (kbd "M-4") 'ahg-status)
-
 ;; web
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
@@ -148,10 +144,6 @@ Return a list of installed packages or nil for every skipped package."
 ;; js2-mode
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
-;; slime
-(setq inferior-lisp-program "sbcl")
-(setq slime-contribs '(slime-fancy slime-company))
-
 ;; visual-regexp
 (require 'visual-regexp)
 (define-key global-map (kbd "C-c r") 'vr/replace)
@@ -167,11 +159,6 @@ Return a list of installed packages or nil for every skipped package."
 
 ;; rainbow-delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-
-;; smex
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;; po
 (autoload 'po-mode "po-mode"
@@ -252,10 +239,9 @@ Return a list of installed packages or nil for every skipped package."
 
 ;; theme
 (when (display-graphic-p)
-  ;; (my-light-frame)
+  (my-light-frame)
   (blink-cursor-mode 0)
-  (setq-default cursor-type 'bar)
-  (load-theme 'plan9))
+  ; (setq-default cursor-type 'bar)
 ;; smart mode line
 (setq sml/theme 'dark)
 (sml/setup)
@@ -269,32 +255,3 @@ Return a list of installed packages or nil for every skipped package."
       ["Siječanj" "Veljača" "Ožujak" "Travanj"
        "Svibanj" "Lipanj" "Srpanj" "Kolovoz"
        "Rujan" "Listopad" "Studeni" "Prosinac"])
-
-;; printing
-;;
-;; Ref: https://www.emacswiki.org/emacs/PrintingBdfFonts
-;;
-;; convert the fonts
-;; $ OPTS="-r 600"
-;; $ otf2bdf $OPTS -w Bold -s O /usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono-BoldOblique.ttf >/somedir/djvmono-bo.bdf
-;; $ otf2bdf $OPTS -w Bold /usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono-Bold.ttf >/somedir/djvmono-b.bdf
-;; $ otf2bdf $OPTS -s O /usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono-Oblique.ttf >/somedir/djvmono-o.bdf
-;; $ otf2bdf $OPTS /usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono.ttf >/somedir/djvmono.bdf
-;;
-(eval-after-load 'ps-print
-  '(progn
-     (require 'ps-mule)
-     (setq ps-multibyte-buffer 'bdf-font) ;; print everything with bdf
-     (setq ps-font-size 9) ;; change according your tastes
-     (setq bdf-directory-list '("~/.fonts"))
-     (setq ps-mule-font-info-database-bdf
-	   '((unicode-bmp  ; everything in the world should be printed with this font
-	      (normal bdf "djvmono.bdf")
-	      (bold bdf "djvmono-b.bdf")
-	      (italic bdf "djvmono-o.bdf")
-	      (bold-italic bdf "djvmono-bo.bdf"))
-	     (iso-8859-1   ; please, latin-1 TOO, I said everything!
-	      (normal bdf "djvmono.bdf")
-	      (bold bdf "djvmono-b.bdf")
-	      (italic bdf "djvmono-o.bdf")
-	      (bold-italic bdf "djvmono-bo.bdf"))))))
