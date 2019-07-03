@@ -23,6 +23,7 @@ Plugin 'justinmk/vim-dirvish'
 Plugin 'fugitive.vim'
 " Python
 Plugin 'davidhalter/jedi-vim'
+Plugin 'vim-python/python-syntax'
 " Javascript
 Plugin 'pangloss/vim-javascript'
 " Groovy
@@ -33,18 +34,17 @@ Plugin 'junegunn/rainbow_parentheses.vim'
 " Themes
 Plugin 'cocopon/iceberg.vim'
 Plugin 'joshdick/onedark.vim'
-Plugin 'morhetz/gruvbox'
 Plugin 'tomasr/molokai'
 " Linting
 Plugin 'w0rp/ale'
 Plugin 'maximbaz/lightline-ale'
 " Hex editing
 Plugin 'Shougo/vinarise.vim'
+" Notes
+" Plugin 'vimwiki/vimwiki'
+" Plugin 'gu-fan/riv.vim'
 call vundle#end()
 
-" Packadd:
-" ========
-packadd! matchit
 
 " Global:
 " =======
@@ -103,7 +103,6 @@ set title
 " ==========
 
 " Open new tab with output of hg diff command
-" -------------------------------------------
 function! HgDiff()
     tabnew
     setlocal buftype=nofile ft=diff bufhidden=hide noswapfile
@@ -112,7 +111,6 @@ function! HgDiff()
 endfunction
 
 " Open new tab with output of git diff command
-" -------------------------------------------
 function! GitDiff()
     tabnew
     setlocal buftype=nofile ft=diff bufhidden=hide noswapfile
@@ -139,8 +137,6 @@ function! BufferClose()
     endif
 endfunction
 
-" autocmd FileType python nnoremap <buffer> <localleader>c I# <esc>
-" autocmd FileType python :iabbrev <buffer> ipdb import ipdb; ipdb.set_trace() 
 " Python:
 " =======
 augroup ft_py
@@ -150,8 +146,10 @@ augroup ft_py
     autocmd BufRead,BufNewFile *.py set ai smarttab smartindent
     autocmd BufRead,BufNewFile *.py set foldlevel=99
     autocmd BufWritePre *.py :%s/\s\+$//e
+    autocmd FileType python nnoremap <buffer> <f2> Oimport ipdb; ipdb.set_trace()<ESC>
+    autocmd FileType python inoremap <buffer> <f2> import ipdb; ipdb.set_trace()
 augroup END
-let python_highlight_all=1
+let g:python_highlight_all=1
 
 " Shell:
 " ======
@@ -202,6 +200,8 @@ augroup ft_js
     autocmd!
     autocmd BufNewFile,BufRead *.js set ts=4 sts=4 shiftwidth=4
     autocmd FileType javascript set makeprg=jshint\ %
+    autocmd FileType javascript nnoremap <buffer> <f2> Oconsole.log();<ESC>hi
+    autocmd FileType javascript inoremap <buffer> <f2> console.log();<ESC>hi
 augroup END
 
 " Ruby:
@@ -253,18 +253,27 @@ if has("gui_running")
     elseif has("gui_macvim")
         set guifont=Menlo:h14
     else
-        set guifont=Fira\ Code\ Retina\ 9.5,Monospace\ 10,Liberation\ Mono\ 10
+        set guifont=Fira\ Code\ Retina\ 9.5,Monospace\ 10
     endif
     set linespace=1
+    set guioptions-=m
+    set guioptions-=T
     set guioptions-=r
     set guioptions-=R
-
     set guioptions-=L
     set guicursor=a:blinkon0  	" no mouse blink
 endif
 
 " Plugins:
 " ========
+" Load matchit.vim
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+    runtime! macros/matchit.vim
+endif
+" Load man.vim
+if !exists(':Man')
+    runtime! ftplugin/man.vim
+endif
 let g:netrw_browse_split = 4    " open in previous window
 let g:netrw_winsize = 20        " 20% size
 let g:netrw_banner = 0          " no banner
@@ -272,6 +281,7 @@ let g:netrw_liststyle = 3       " tree style
 let g:signify_vcs_list = ['git', 'hg']
 let g:signify_sign_change = '~'
 let g:tagbar_left = 0
+let g:tagbar_sort = 0
 nmap <F1> :TagbarToggle<CR>
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -279,7 +289,6 @@ nnoremap <leader>p :CtrlPTag<cr>
 nnoremap <leader>b :CtrlPBuffer<cr>
 if executable('ag')
     let g:ackprg = 'ag --nogroup --nocolor --column'
-    " let g:ackprg = 'ag --vimgrep'  " will report match on every line
 endif
 cnoreabbrev Ack Ack!
 nnoremap <Leader>a :Ack!<Space>
@@ -300,6 +309,7 @@ let g:lightline.component_type = {
     \ 'linter_ok': 'left',
     \ }
 let g:lightline.component_function = {'gitbranch': 'fugitive#head'}
+" let g:lightline.component = {'charvalue': '0x%B'}
 let g:lightline.active = {
     \ 'left':  [ [ 'mode', 'paste' ],
     \            [ 'bufnum'],
@@ -308,6 +318,11 @@ let g:lightline.active = {
     \            [ 'percent' ],
     \            [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ],
     \            [ 'fileformat', 'fileencoding', 'filetype' ] ],
+    \ }
+let g:lightline.inactive = {
+    \ 'left': [ [ 'filename', 'modified' ] ],
+    \ 'right': [ [ 'lineinfo' ],
+    \            [ 'percent' ] ]
     \ }
 set noshowmode  " lightline will show mode
 let g:ale_lint_on_text_changed = 'never'
@@ -327,6 +342,14 @@ let g:ale_fixers = {
 nnoremap <leader>v :edit $MYVIMRC<CR>
 nnoremap <leader>s :source $MYVIMRC<CR>
 
+" croatian chars which maps to US keyboard
+nmap š [
+nmap đ ]
+omap š [
+omap đ ]
+xmap š [
+xmap đ ]
+
 map <ScrollWheelUp> <C-Y>
 map <ScrollWheelDown> <C-E>
 noremap  <silent> <C-S> :update<CR>
@@ -337,6 +360,7 @@ nnoremap + ddkP
 nnoremap _ ddp
 nnoremap H ^
 nnoremap L g_
+vnoremap L g_
 " Disable mapping example
 " inoremap <left> <nop>
 
@@ -345,4 +369,8 @@ nnoremap <Down> gj
 
 nnoremap <f5> :e!<cr>
 
+" Commands:
+" =========
+" Create python tags in current working directory
+command! MakeTags !ctags -R --fields=+l --languages=python --python-kinds=-iv --exclude=build --exclude=node_modules --exclude=backup -f ./tags .
 " vim: expandtab:sw=4:sts=4
