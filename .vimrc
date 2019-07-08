@@ -146,8 +146,8 @@ augroup ft_py
     autocmd BufRead,BufNewFile *.py set ai smarttab smartindent
     autocmd BufRead,BufNewFile *.py set foldlevel=99
     autocmd BufWritePre *.py :%s/\s\+$//e
-    autocmd FileType python nnoremap <buffer> <f2> Oimport ipdb; ipdb.set_trace()<ESC>
-    autocmd FileType python inoremap <buffer> <f2> import ipdb; ipdb.set_trace()
+    autocmd FileType python nnoremap <buffer> <f2> Oimport pudb; pudb.set_trace()<ESC>
+    autocmd FileType python inoremap <buffer> <f2> import pudb; pudb.set_trace()
 augroup END
 let g:python_highlight_all=1
 
@@ -159,6 +159,14 @@ augroup ft_sh
     autocmd BufRead,BufNewFile *.sh set makeprg=shellcheck\ %
     autocmd BufRead,BufNewFile *.sh set ai smarttab smartindent
     autocmd BufRead,BufNewFile *.sh set foldlevel=99
+augroup END
+
+" Sql:
+" ====
+augroup ft_sql
+    autocmd!
+    autocmd BufRead,BufNewFile *.sql set ts=4 sts=4 shiftwidth=4 expandtab
+    autocmd BufRead,BufNewFile *.sql set ai smarttab smartindent
 augroup END
 
 " ReST:
