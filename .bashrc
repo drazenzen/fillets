@@ -88,19 +88,17 @@ fi
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF'
+alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
+alias h='history'
+alias g='grep'
+alias e='vim'
 alias py='python'
+alias m='./manage.py'
 alias ..='cd ..'
 alias ...='cd ../..'
-alias h='history'
-alias e='editor'
 
 # Ref: http://unix.stackexchange.com/questions/66581
 # For getting both the exit status and output from command
@@ -108,10 +106,9 @@ __hg_ps1() {
     local INFO
     INFO=$(hg branch 2> /dev/null)
     if [ $? -eq 0 ]; then
-        echo -e " [$INFO $(hg status | cut -b 1 | uniq | sort | tr -d '\n')]"
+        echo -e " (HG: $INFO $(hg status | cut -b 1 | uniq | sort | tr -d '\n'))"
     fi
 }
-
 # Ref: http://gilesorr.com/bashprompt/prompts/jobs.html
 __jobcount() {
     stopped="$(jobs -s | wc -l | tr -d " ")"
@@ -120,13 +117,30 @@ __jobcount() {
         echo -n " [${running}r/${stopped}s]"
     fi
 }
+# processes
+__processcount() {
+    echo -e "[p=$(ps ux | wc -l)]"
+}
+# screen
+__screen() {
+    if ! screen -Ux;
+    then
+        echo "Running screen..."
+        screen -U
+    fi
+}
+alias sc=__screen
 
-if [ "$TERM" != "dumb" ]; then
-	export PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]\u\$(__hg_ps1)\$(__jobcount):\w$ "
+# git
+if [ -f $HOME/.git-prompt.sh ]; then
+    source $HOME/.git-prompt.sh
+    GIT_PS1_SHOWDIRTYSTATE=1
 else
-	export PS1="\u@\h: \w$ "
+    echo "Git prompt script not found"
 fi
-export EDITOR=vim
+
+# Prompt
+PS1='[\u@\[\033[0;32m\]\h\[\033[0m\] \W$(__hg_ps1)$(__git_ps1 " (%s)")]\$ '
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -135,15 +149,6 @@ export EDITOR=vim
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
-fi
-
-# PATH
-PATH="$HOME/bin:$PATH"
-
-# 256 color support for Xfce4 Terminal
-# http://stackoverflow.com/questions/19327836
-if [ "$COLORTERM" == "xfce4-terminal" ] ; then
-    export TERM=xterm-256color
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -157,7 +162,26 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Fortunes
-if [ -f $HOME/bin/fortune.py ]; then
-  fortune.py
+# 256 color support for Xfce4 Terminal
+# http://stackoverflow.com/questions/19327836
+if [ "$COLORTERM" == "xfce4-terminal" ] ; then
+    export TERM=xterm-256color
 fi
+
+# PATH=$HOME/bin:$PATH
+# turn off XOFF (stops commands from being received) CTRL-S
+# to enable again commands use CTRL-Q
+# bind -r '\C-s'
+stty -ixon
+
+# Python
+export PYTHONSTARTUP=$HOME/.pythonrc
+
+# Fortunes
+if [ -f $HOME/bin/fortune ]; then
+    $HOME/bin/fortune
+else
+    echo "Fortune not found"
+fi
+
+# vim:ts=4:et
