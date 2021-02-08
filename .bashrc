@@ -1,107 +1,38 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+# .bashrc
 
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
 
-# append to the history file, don't overwrite it
+# User specific aliases and functions
+umask 0022
+
+HISTCONTROL=ignoreboth # Don't put duplicate lines or lines starting with space in the history
 shopt -s histappend
+shopt -s cmdhist
+HISTSIZE=10000
+HISTFILESIZE=10000
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+shopt -s checkwinsize  # check window size after each command
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
-
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -l'
-alias la='ls -A'
-alias l='ls -CF'
-
-alias h='history'
-alias g='grep'
-alias e='vim'
-alias py='python'
-alias m='./manage.py'
-alias ..='cd ..'
-alias ...='cd ../..'
+# Turn off XON/XOFF
+# Used to pause the sending of data to console with CTRL-S and enabling it again with CTRL-Q)
+stty -ixon
 
 # Ref: http://unix.stackexchange.com/questions/66581
 # For getting both the exit status and output from command
+
+# HG prompt
+if ! command -v hg &> /dev/null; then
+    echo "Mercurial not found"
+fi
 __hg_ps1() {
     local INFO
     INFO=$(hg branch 2> /dev/null)
@@ -117,21 +48,33 @@ __jobcount() {
         echo -n " [${running}r/${stopped}s]"
     fi
 }
-# processes
+# Processes
 __processcount() {
     echo -e "[p=$(ps ux | wc -l)]"
 }
-# screen
+# Screen
+if ! command -v screen &> /dev/null; then
+    echo "Screen not found"
+fi
 __screen() {
     if ! screen -Ux;
     then
-        echo "Running screen..."
+        echo "Running screen session found..."
         screen -U
     fi
 }
-alias sc=__screen
+# Term title
+__termtitle() { printf "\033]0;$*\007"; }
+# Docker compose exec
+__docker_compose_exec() {
+    __termtitle "$1"
+    docker-compose exec "$1" bash
+}
 
-# git
+# Git prompt
+if ! command -v git &> /dev/null; then
+    echo "Git not found"
+fi
 if [ -f $HOME/.git-prompt.sh ]; then
     source $HOME/.git-prompt.sh
     GIT_PS1_SHOWDIRTYSTATE=1
@@ -139,43 +82,52 @@ else
     echo "Git prompt script not found"
 fi
 
-# Prompt
-PS1='[\u@\[\033[0;32m\]\h\[\033[0m\] \W$(__hg_ps1)$(__git_ps1 " (%s)")]\$ '
+# Dir env
+if ! command -v direnv &> /dev/null; then
+    echo "Direnv not found"
+fi
+eval "$(direnv hook bash)"
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+# Terraform env
+if [ -f $HOME/apps/tfenv/bin/tfenv ]; then
+    PATH="$HOME/apps/tfenv/bin/:$PATH"
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
-
-# 256 color support for Xfce4 Terminal
-# http://stackoverflow.com/questions/19327836
-if [ "$COLORTERM" == "xfce4-terminal" ] ; then
-    export TERM=xterm-256color
-fi
-
-# PATH=$HOME/bin:$PATH
-# turn off XOFF (stops commands from being received) CTRL-S
-# to enable again commands use CTRL-Q
-# bind -r '\C-s'
-stty -ixon
+# Colorful GCC output
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Python
 export PYTHONSTARTUP=$HOME/.pythonrc
+
+# Node.js
+if [ -d "$HOME/.local/node" ]; then
+    export NODEJS_HOME=$HOME/.local/node
+    PATH=$NODEJS_HOME/bin:$PATH
+else
+    echo "Node.js directory not found"
+fi
+
+# SciTE
+if command -v SciTE &> /dev/null; then
+    mkdir -p $HOME/.config/scite
+    export SciTE_USERHOME=$HOME/.config/scite
+else
+    echo "SciTE not found"
+fi
+
+# Aliases
+alias ll='ls -al'
+alias la='ls -A'
+alias l='ls -CF'
+alias g='grep'
+alias e='vim'
+alias py='python'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias sc=__screen
+alias black-power='git diff --name-only $(git merge-base master HEAD) | grep py$ | sed "s|.*|$(git rev-parse --show-toplevel)/\0|" | xargs -t -n1 black --config $(git rev-parse --show-toplevel)/pyproject.toml'
+alias kubedashtoken='kubectl get secret -n kube-system $(kubectl -n kube-system get secret | grep eks-admin | awk '\''{print $1}'\'') -o json | jq -r ".data.token" | base64 -d'
+alias de=__docker_compose_exec
 
 # Fortunes
 if [ -f $HOME/bin/fortune ]; then
@@ -183,5 +135,9 @@ if [ -f $HOME/bin/fortune ]; then
 else
     echo "Fortune not found"
 fi
+
+PS1='[\u@\h \W$(__hg_ps1)$(__git_ps1 " (%s)")]\$ '
+PROMPT_COMMAND="$PROMPT_COMMAND; history -a"
+export PATH
 
 # vim:ts=4:et
