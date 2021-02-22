@@ -1,4 +1,4 @@
-# Enable completition (readline)
+# Enable basic completition through readline
 try:
     import readline
 except ImportError:
@@ -7,3 +7,8 @@ else:
     import rlcompleter
     readline.parse_and_bind("tab: complete")
 
+
+def run(path):
+    """Run file on path and put its global vars in the interpreter global scope.
+    """
+    exec(open(path).read(), globals())
