@@ -1,50 +1,4 @@
 " .vimrc
-"
-" Vundle:
-" =======
-set nocompatible    " be iMproved, required
-filetype off        " required
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'mhinz/vim-signify'
-Plugin 'majutsushi/tagbar'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'mileszs/ack.vim'
-Plugin 'itchyny/lightline.vim'
-Plugin 'junegunn/goyo.vim'
-Plugin 'surround.vim'
-Plugin 'ervandew/supertab'
-Plugin 'repeat.vim'
-Plugin 'godlygeek/tabular'
-" Files
-Plugin 'justinmk/vim-dirvish'
-" Git
-Plugin 'fugitive.vim'
-" Python
-Plugin 'davidhalter/jedi-vim'
-Plugin 'vim-python/python-syntax'
-" Javascript
-Plugin 'pangloss/vim-javascript'
-" Groovy
-Plugin 'groovy.vim'
-" Lisp
-Plugin 'junegunn/rainbow_parentheses.vim'
-" Plugin 'bhurlow/vim-parinfer'
-" Themes
-Plugin 'cocopon/iceberg.vim'
-Plugin 'joshdick/onedark.vim'
-Plugin 'tomasr/molokai'
-" Linting
-Plugin 'w0rp/ale'
-Plugin 'maximbaz/lightline-ale'
-" Hex editing
-Plugin 'Shougo/vinarise.vim'
-" Notes
-" Plugin 'vimwiki/vimwiki'
-" Plugin 'gu-fan/riv.vim'
-call vundle#end()
-
 
 " Global:
 " =======
@@ -56,7 +10,6 @@ if has("termguicolors")
     set termguicolors
 endif
 syntax on
-colorscheme onedark
 set hls
 set incsearch
 set ignorecase
@@ -96,7 +49,7 @@ set wildmode=full
 set history=500
 set foldmethod=indent
 set foldlevel=99
-set noequalalways 	" after split or close do not make windows equal
+set noequalalways   " after split or close do not make windows equal
 set title
 
 " Functions:
@@ -269,7 +222,7 @@ if has("gui_running")
     set guioptions-=r
     set guioptions-=R
     set guioptions-=L
-    set guicursor=a:blinkon0  	" no mouse blink
+    set guicursor=a:blinkon0    " no mouse blink
 endif
 
 " Plugins:
@@ -282,81 +235,11 @@ endif
 if !exists(':Man')
     runtime! ftplugin/man.vim
 endif
-let g:netrw_browse_split = 4    " open in previous window
-let g:netrw_winsize = 20        " 20% size
-let g:netrw_banner = 0          " no banner
-let g:netrw_liststyle = 3       " tree style
-let g:signify_vcs_list = ['git', 'hg']
-let g:signify_sign_change = '~'
-let g:tagbar_left = 0
-let g:tagbar_sort = 0
-nmap <F1> :TagbarToggle<CR>
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-nnoremap <leader>p :CtrlPTag<cr>
-nnoremap <leader>b :CtrlPBuffer<cr>
-if executable('ag')
-    let g:ackprg = 'ag --nogroup --nocolor --column'
-endif
-cnoreabbrev Ack Ack!
-nnoremap <Leader>a :Ack!<Space>
-autocmd FileType python map <buffer> <F8> :call Flake8()<CR>
-let g:jedi#show_call_signatures = 2
-let g:lightline = {}
-let g:lightline.colorscheme = 'onedark'
-let g:lightline.component_expand = {
-    \ 'linter_checking': 'lightline#ale#checking',
-    \ 'linter_warnings': 'lightline#ale#warnings',
-    \ 'linter_errors': 'lightline#ale#errors',
-    \ 'linter_ok': 'lightline#ale#ok',
-    \ }
-let g:lightline.component_type = {
-    \ 'linter_checking': 'left',
-    \ 'linter_warnings': 'warning',
-    \ 'linter_errors': 'error',
-    \ 'linter_ok': 'left',
-    \ }
-let g:lightline.component_function = {'gitbranch': 'fugitive#head'}
-" let g:lightline.component = {'charvalue': '0x%B'}
-let g:lightline.active = {
-    \ 'left':  [ [ 'mode', 'paste' ],
-    \            [ 'bufnum'],
-    \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
-    \ 'right': [ [ 'lineinfo' ],
-    \            [ 'percent' ],
-    \            [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ],
-    \            [ 'fileformat', 'fileencoding', 'filetype' ] ],
-    \ }
-let g:lightline.inactive = {
-    \ 'left': [ [ 'filename', 'modified' ] ],
-    \ 'right': [ [ 'lineinfo' ],
-    \            [ 'percent' ] ]
-    \ }
-set noshowmode  " lightline will show mode
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_linter_aliases = {'htmldjango': ['html']}
-let g:ale_linters = {
-    \ 'python': ['flake8'],
-    \ 'javascript': ['jshint'],
-    \ 'htmldjango': ['htmlhint'],
-    \ }
-let g:ale_fixers = {
-    \ 'python': [ 'remove_trailing_lines', 'isort' ],
-    \ }
-" let g:javascript_plugin_jsdoc = 1
 
 " Keymaps:
 " ========
 nnoremap <leader>v :edit $MYVIMRC<CR>
 nnoremap <leader>s :source $MYVIMRC<CR>
-
-" croatian chars which maps to US keyboard
-nmap š [
-nmap đ ]
-omap š [
-omap đ ]
-xmap š [
-xmap đ ]
 
 map <ScrollWheelUp> <C-Y>
 map <ScrollWheelDown> <C-E>
@@ -381,4 +264,5 @@ nnoremap <f5> :e!<cr>
 " =========
 " Create python tags in current working directory
 command! MakeTags !ctags -R --fields=+l --languages=python --python-kinds=-iv --exclude=build --exclude=node_modules --exclude=backup -f ./tags .
+
 " vim: expandtab:sw=4:sts=4

@@ -89,4 +89,4 @@ defnonblock 5
 # ------------------------------------------------------------------------------
 
 screen bash
-screen emacs -nw
+screen bash
