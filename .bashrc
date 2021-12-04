@@ -48,6 +48,7 @@ __jobcount() {
         echo -n " [${running}r/${stopped}s]"
     fi
 }
+# Jobs
 # Processes
 __processcount() {
     echo -e "[p=$(ps ux | wc -l)]"
@@ -69,6 +70,18 @@ __termtitle() { printf "\033]0;$*\007"; }
 __docker_compose_exec() {
     __termtitle "$1"
     docker-compose exec "$1" bash
+}
+# Kubectl
+__kubectl_exec() {
+    echo "Kubectl exec"
+}
+__kubectl_list_pods() {
+    local status=${1:?Must provide a status argument. E.g. Evicted}
+    kubectl get pods --all-namespaces | grep "$status" | awk '{print $2 " --namespace=" $1}'
+}
+__kubectl_delete_pods() {
+    local status=${1:?Must provide a status argument. E.g. Evicted}
+    kubectl get pods --all-namespaces | grep "$status" | awk '{print $2 " --namespace=" $1}' | xargs -l1 -- bash -c 'kubectl delete pod $0 $1'
 }
 
 # Git prompt
